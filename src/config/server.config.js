@@ -3,6 +3,8 @@ import cors from "cors";
 import morgan from "morgan";
 import client from "../routes/client.route.js"
 import employee from "../routes/employee.route.js"
+import product from "../routes/product.route.js"
+import provider from "../routes/provider.route.js"
 
 const app = express();
 
@@ -18,7 +20,9 @@ app.get("/", (req, res)=>{
 });
 
 app.use("/api/inventory/client", client);
-app.use("/api/inventory/employee", employee)
+app.use("/api/inventory/employee", employee);
+app.use("/api/inventory/product", product);
+app.use("/api/inventory/provider", provider);
 
 
 export default app;

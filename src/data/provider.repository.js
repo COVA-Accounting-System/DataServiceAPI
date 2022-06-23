@@ -1,17 +1,15 @@
-import {Provider} from "../models/provider.model.js"
+
 
 export default class providerRepository{
-    
-    async getProviders(){
-        return Provider.find();
+    constructor(Provider){
+        this.Provider = Provider;
     }
 
-    async createProvider(data){
-        const newProvider = new Provider({
-            name: data.body.name,
-            product: data.body.product,
-            phone: data.body.phone
-        });
+    async getProviders(){
+        return this.Provider.find();
+    }
+
+    async createProvider(newProvider){
         return newProvider.save();
     }
 }

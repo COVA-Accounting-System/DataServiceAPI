@@ -1,19 +1,14 @@
-import {Employee} from "../models/employee.model.js"
+
 
 export default class employeeRepository{
-   
+   constructor(Employee){
+        this.Employee = Employee;
+   }
     async getEmployees(){
-        return Employee.find();
+        return this.Employee.find();
     }
 
-    async createEmployee(data){
-        const newEmployee = new Employee({
-            name: data.body.name,
-            lastName: data.body.lastName,
-            phone: data.body.phone,
-            ci: data.body.phone,
-            salary: data.body.salary
-        });
+    async createEmployee(newEmployee){
         return newEmployee.save();
     }
 }

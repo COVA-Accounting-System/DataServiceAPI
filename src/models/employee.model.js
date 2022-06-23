@@ -8,7 +8,7 @@ const schema = new mongoose.Schema({
     },
     lastName:{
         type: String,
-        required: false,
+        required: true,
         trim: true
     },
     phone:{
@@ -18,10 +18,20 @@ const schema = new mongoose.Schema({
     },
     ci:{
         type: String,
+        required: true,
+        trim: true
+    },
+    startDate:{
+        type: String,
         required: false,
         trim: true
     },
-    salary:{
+    nationality:{
+        type: String,
+        required: false,
+        trim: true
+    },
+    dateOfBirth:{
         type: String,
         required: false,
         trim: true

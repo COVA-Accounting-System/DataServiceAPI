@@ -19,7 +19,7 @@ const schema = new mongoose.Schema({
     },
     inDebt:{
         type: String,
-        required: false,
+        required: true,
         trim: true
     }
 },{

@@ -1,18 +1,14 @@
-import {Product} from "../models/product.model.js"
+
 
 export default class productRepository{
-    
-    async createProduct(data){
-        const newProduct = new Product({
-            name: data.body.name,
-            photography: data.body.photography,
-            unitPrice: data.body.unitPrice,
-            dozenPrice: data.body.dozenPrice
-        });
+    constructor(Product){
+        this.Product = Product;
+    }
+    async createProduct(newProduct){
         return newProduct.save();
     }
 
-    async getProdutcs(){
-        return Product.find();
+    async getProducts(){
+        return this.Product.find();
     }
 }

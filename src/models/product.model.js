@@ -7,6 +7,11 @@ const schema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    description:{
+        type: String,
+        required: false,
+        trim: true
+    },
     photography:{
         type: String,
         required: false,

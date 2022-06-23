@@ -1,17 +1,32 @@
 import mongoose from "mongoose"
 
 const schema = new mongoose.Schema({
-    name: {
+    storeName: {
         type: String,
         required: true,
         trim: true
     },
-    product:{
+    city:{
+        type: String,
+        required: false,
+        trim: true
+    },
+    country:{
         type: String,
         required: false,
         trim: true
     },
     phone:{
+        type: String,
+        required: false,
+        trim: true
+    },
+    nit:{
+        type: String,
+        required: false,
+        trim: true
+    },
+    address:{
         type: String,
         required: false,
         trim: true

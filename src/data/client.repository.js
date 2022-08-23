@@ -14,4 +14,12 @@ export default class clientRepository {
         return newClient.save();
     }
     
+    async updateClient(){
+        return this.Client()
+    }
+
+    async deleteClient(){
+        
+    }
+    
 }

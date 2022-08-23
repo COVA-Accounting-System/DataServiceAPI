@@ -21,6 +21,11 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    isVisible: {
+        type: Boolean,
+        default: true,
+        required: true
     }
 },{
     versionKey: false,

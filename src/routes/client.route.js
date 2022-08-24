@@ -8,7 +8,7 @@ const clientService = new _clientService();
 
 router.get('/', async (req, res) => {
     try{
-        var clients = await clientService.getClients();
+        const clients = await clientService.getClients();
         res.json(clients);
     }
     catch(error){
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async(req, res)=>{
     try{
-        var newClient = await clientService.createClient(req);
+        const newClient = await clientService.createClient(req);
         res.json(newClient);
     }
     catch(error){
@@ -26,6 +26,24 @@ router.post('/', async(req, res)=>{
     }
 });
 
+router.put('/query', async (req, res) => {
+    try{
+        const client = await clientService.updateClientVisibility(req);
+        res.json(client);
+    }
+    catch (err){
+        console.error(err);
+    }
+})
 
+router.delete('/query', async (req, res) => {
+    try{
+        await clientService.deleteClient(req);
+        res.send('This client was deleted');
+    }
+    catch (err){
+        console.error(err);
+    }
+})
 
 export default router;

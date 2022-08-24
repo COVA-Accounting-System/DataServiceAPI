@@ -9,17 +9,22 @@ export default class clientRepository {
         return this.Client.find();
     }
 
+    async getClient(query){
+        return this.Client.findOne(query);
+    }
+
     async createClient(newClient){
 
         return newClient.save();
     }
     
-    async updateClient(){
-        return this.Client()
-    }
+   async updateClient(query, queryToUpdateWith){
+       await this.Client.findOneAndUpdate(query, queryToUpdateWith)
+       return this.getClient(query);
+   }
 
-    async deleteClient(){
-        
-    }
-    
+   async deleteClient(query){
+        await this.Client.findOneAndDelete(query);
+        return `This client was deleted`;
+   }
 }

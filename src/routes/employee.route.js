@@ -25,7 +25,27 @@ router.post('/', async(req, res) =>{
     catch(err){
         console.error(err);
     }
-})
+});
+
+router.put('/query', async(req, res) =>{
+    try{
+        const employee = await employeeService.updateEmployeeVisibility(req);
+        res.json(employee);
+    }
+    catch(err){
+        console.error(err);
+    }
+});
+
+router.delete("/query", async(req, res) =>{
+    try{
+        await employeeService.deleteEmployee(req);
+        res.send("This employee was deleted");
+    }
+    catch(err){
+        console.error(err);
+    }
+});
 
 
 export default router;

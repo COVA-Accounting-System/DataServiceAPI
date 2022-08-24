@@ -19,4 +19,15 @@ export default class clientService {
         });
         return this.clientRepository.createClient(newClient);
     }
+
+    async updateClientVisibility(data){
+        const query = data.body
+        const queryToUpdateWith = {isVisible: false}
+        return this.clientRepository.updateClient(query, queryToUpdateWith);
+    }
+
+    async deleteClient(data){
+        const query = data.body
+        return this.clientRepository.deleteClient(query);
+    }
 }

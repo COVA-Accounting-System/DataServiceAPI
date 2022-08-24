@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
     creationDate:{
         type: Date,
         required: true,
-        default: Date.now,
+        default: new Date(Date.now()).toLocaleDateString(),
         trim: true
     },
     productionDate:{

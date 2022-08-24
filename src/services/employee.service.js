@@ -22,4 +22,15 @@ export default class employeeService{
         });
         return this.employeeRepository.createEmployee(newEmployee);
     }
+
+    async updateEmployeeVisibility(data){
+        const query = data.body
+        const queryToUpdateWith = {isVisible: false}
+        return this.employeeRepository.updateEmployee(query, queryToUpdateWith);
+    }
+
+    async deleteEmployee(data){ 
+        const query = data.body;
+        return this.employeeRepository.deleteEmployee(query);
+    }
 }

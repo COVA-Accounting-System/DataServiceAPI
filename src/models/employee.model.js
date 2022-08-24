@@ -23,6 +23,7 @@ const schema = new mongoose.Schema({
     },
     startDate:{
         type: String,
+        default: new Date(Date.now()).toLocaleDateString(),
         required: false,
         trim: true
     },
@@ -35,6 +36,11 @@ const schema = new mongoose.Schema({
         type: String,
         required: false,
         trim: true
+    },
+    isVisible: {
+        type: Boolean,
+        default: true,
+        required: true
     }
 },{
     versionKey: false,

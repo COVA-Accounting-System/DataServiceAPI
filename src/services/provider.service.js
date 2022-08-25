@@ -22,4 +22,15 @@ export default class providerService{
         });
         return this.providerRepository.createProvider(newProvider);
     }
+
+    async updateProviderVisibility(data){
+        const query = data.body
+        const queryToUpdateWith = {isVisible: false}
+        return this.providerRepository.updateProvider(query, queryToUpdateWith);
+    }
+
+    async deleteProvider(data){
+        const query = data.body
+        return this.providerRepository.deleteProvider(query);
+    }
 }

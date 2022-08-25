@@ -7,7 +7,7 @@ export default class rawMaterialService{
     }
 
     async getRawMaterials(){
-        return this.rawMaterialRepository.getRawMaterial();
+        return this.rawMaterialRepository.getRawMaterials();
     }
 
     async createRawMaterial(data){
@@ -16,6 +16,17 @@ export default class rawMaterialService{
             amount: data.body.amount,
             unit: data.body.unit
         });
-        return this.newRawMaterial.createRawMaterial(newRawMaterial);
+        return this.rawMaterialRepository.createRawMaterial(newRawMaterial);
+    }
+
+    async updateRawMaterialVisibility(data){
+        const query = data.body
+        const queryToUpdateWith = {isVisible: false}
+        return this.rawMaterialRepository.updateRawMaterial(query, queryToUpdateWith);
+    }
+
+    async deleteRawMaterial(data){
+        const query = data.body;
+        return this.rawMaterialRepository.deleteRawMaterial(query);
     }
 }

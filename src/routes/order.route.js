@@ -16,7 +16,7 @@ router.get('/', async(req, res) => {
 
 router.post('/', async(req, res) => {
     try{
-        const newOrder = await orderService.getOrders();
+        const newOrder = await orderService.createOrder(req);
         res.json(newOrder);
     }
     catch(err){

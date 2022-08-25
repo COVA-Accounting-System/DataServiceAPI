@@ -16,6 +16,16 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/query', async(req, res) => {
+    try{
+        const client = await clientService.getClient(req);
+        res.json(client);
+    }
+    catch(error){
+        console.error(error);
+    }
+})
+
 router.post('/', async(req, res)=>{
     try{
         const newClient = await clientService.createClient(req);

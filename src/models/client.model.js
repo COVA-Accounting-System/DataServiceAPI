@@ -13,12 +13,12 @@ const schema = new mongoose.Schema({
         trim: true
     },
     phone:{
-        type: String,
+        type: Number,
         required: false,
         trim: true
     },
     inDebt:{
-        type: String,
+        type: Number,
         required: true,
         trim: true
     },

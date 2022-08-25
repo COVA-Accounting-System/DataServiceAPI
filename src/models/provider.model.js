@@ -17,12 +17,12 @@ const schema = new mongoose.Schema({
         trim: true
     },
     phone:{
-        type: String,
+        type: Number,
         required: false,
         trim: true
     },
     nit:{
-        type: String,
+        type: Number,
         required: false,
         trim: true
     },
@@ -30,6 +30,11 @@ const schema = new mongoose.Schema({
         type: String,
         required: false,
         trim: true
+    },
+    isVisible: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 },{
     versionKey: false,

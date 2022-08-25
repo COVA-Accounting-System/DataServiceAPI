@@ -7,9 +7,8 @@ export default class orderService{
     }
     async createOrder(data){
         const newOrder = new Order({
-            creationDate: data.body.creationDate,
             client: data.body.client,
-        });
+            statusCounter: data.body.statusCounter}) ;
         return this.orderRepository.createOrders(newOrder);
     }
     async getOrders(){

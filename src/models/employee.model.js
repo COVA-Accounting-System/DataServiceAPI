@@ -12,12 +12,12 @@ const schema = new mongoose.Schema({
         trim: true
     },
     phone:{
-        type: String,
+        type: Number,
         required: false,
         trim: true
     },
     ci:{
-        type: String,
+        type: Number,
         required: true,
         trim: true
     },

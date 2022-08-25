@@ -27,7 +27,7 @@ describe("prove the right functionality of the client endpoint", () => {
             .send(query);
         expect(response.body.name).toEqual("Juan");
         expect(response.body.lastName).toEqual("Peredo");
-        expect(response.body.inDebt).toEqual("5000");
+        expect(response.body.inDebt).toEqual(5000);
     })
 
     test("change the visibility of a client to false", async() => {

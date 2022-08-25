@@ -24,4 +24,25 @@ router.post('/', async(req, res)=>{
     }
 });
 
+router.put('/query', async(req, res) => {
+    try{
+        const provider = await providerService.updateProviderVisibility(req);
+        res.json(provider);
+    }
+    catch(err){
+        console.error(err);
+    }
+});
+
+router.delete('/query', async(req, res) => {
+    try{
+        await providerService.deleteProvider(req);
+        res.send('This provider was deleted');
+    }
+    catch(err){
+        console.error(err);
+    }
+});
+
+
 export default router;

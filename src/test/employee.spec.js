@@ -27,7 +27,7 @@ describe("prove the right functionality of the employee endpoint", () => {
             .send(query);
         expect(response.body.name).toEqual("Rayyan");
         expect(response.body.lastName).toEqual("Arnold");
-        expect(response.body.ci).toEqual("9654752");
+        expect(response.body.ci).toEqual(9654752);
     });
 
 

@@ -4,23 +4,23 @@ import {production_stage} from "../enums/production_stage.js"
 
 const schema = new mongoose.Schema({
     creationDate:{
-        type: Date,
+        type: String,
         required: true,
         default: new Date(Date.now()).toLocaleDateString(),
         trim: true
     },
     productionDate:{
-        type: Date,
+        type: String,
         required: false,
         trim: true
     },
     completionDate:{
-        type: Date,
+        type: String,
         required: false,
         trim: true
     },
     soldDate:{
-        type: Date,
+        type: String,
         required: false,
         trim: true
     },
@@ -30,7 +30,13 @@ const schema = new mongoose.Schema({
     },
     state:{
         type: String,
-        required: true
+        required: false
+    },
+    stateCounter:{
+        type: Number,
+        trim: true,
+        required: true,
+        default: 0
     }
 },{
     versionKey: false,
@@ -41,8 +47,7 @@ const schema = new mongoose.Schema({
  class order{
     constructor(Client){
         this.client = Client;
-        this.stateCounter = 0;
-        this.state = production_stage[stateCounter];
+        this.state = production_stage[this.stateCounter];
     }
     moveForward(){
         if(this.state != production_stage[production_stage.length() - 1] ){

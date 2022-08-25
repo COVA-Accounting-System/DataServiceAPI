@@ -10,6 +10,10 @@ export default class clientService {
         return this.clientRepository.getClients();
     }
 
+    async getClient(data){
+        return this.clientRepository.getClient(data.body);
+    }
+
     async createClient(data){
         const newClient = new Client({
             name: data.body.name,

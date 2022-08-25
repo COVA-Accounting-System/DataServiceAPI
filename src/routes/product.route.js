@@ -25,5 +25,25 @@ router.post('/', async(req, res)=>{
     }
 });
 
+router.put('/query', async(req, res) => {
+    try{
+        const product = await productService.updateProductVisibility(req);
+        res.json(product);
+    }
+    catch (err){
+        console.error(err);
+    }
+});
+
+router.delete('/query', async(req, res) => {
+    try{
+        await productService.deleteProduct(req);
+        res.send('This product was deleted');
+    }
+    catch (err){
+        console.error(err);
+    }
+});
+
 
 export default router;

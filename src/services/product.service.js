@@ -20,4 +20,15 @@ export default class productService{
         });
         return this.productRepository.createProduct(newProduct);
     }
+
+    async updateProductVisibility(data){
+        const query = data.body
+        const queryToUpdateWith = {isVisible: false}
+        return this.productRepository.updateProduct(query, queryToUpdateWith);
+    }
+
+    async deleteProduct(data){
+        const query = data.body;
+        return this.productRepository.deleteProduct(query);
+    }
 }

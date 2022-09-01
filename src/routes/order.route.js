@@ -24,4 +24,25 @@ router.post('/', async(req, res) => {
     }
 })
 
+
+router.put('/changeStateBackward', async(req, res) => {
+    try{
+        const newOrder = await orderService.changeStateBackward(req);
+        res.json(newOrder);
+    }
+    catch(err){
+        console.error(err);
+    }
+})
+
+router.put('/changeStateFordward', async(req, res) => {
+    try{
+        const newOrder = await orderService.changeStateFordward(req);
+        res.json(newOrder);
+    }
+    catch(err){
+        console.error(err);
+    }
+})
+
 export default router;

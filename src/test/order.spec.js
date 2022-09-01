@@ -17,7 +17,8 @@ describe("prove the right functionality of the order endpoint", () => {
         await request(app)
         .post(GLOBAL_ROUTE_ORDER)
         .send({
-            client: client
+            client: client,
+            stateCounter: 3
         })
         .then(res => {
             console.log(res.body);
@@ -37,7 +38,8 @@ describe("prove the right functionality of the order endpoint", () => {
         await request(app)
         .post(GLOBAL_ROUTE_ORDER)
         .send({
-            client: client.body})
+            client: client.body,
+            stateCounter: 2})
         .then(res => {
             console.log(res.body)
             expect(res.body.client.name).toEqual("Zain");
@@ -57,12 +59,51 @@ describe("prove the right functionality of the order endpoint", () => {
         await request(app)
         .post(GLOBAL_ROUTE_ORDER)
         .send({
-            client: client.body
+            client: client.body,
+            stateCounter: 1
         })
         .then(res => {
             expect(res.body.client.name).toEqual("Juan");
         })
     });
 
-    test
-})
+    test("Get an existent order and change its state", async() => {
+        const client = await request(app)
+        .get(`${GLOBAL_ROUTE_CLIENT}/query`)
+        .send({
+            name: "Juan",
+            lastName: "Gonzales",
+            inDebt: 1000
+        });
+        expect(client.body.name).toEqual("Juan");
+
+
+        const order = await request(app)
+        .post(GLOBAL_ROUTE_ORDER)
+        .send({
+            client: client.body,
+            stateCounter: 1
+        });
+        expect(order.body.stateCounter).toEqual(1);
+
+        
+        await request(app)
+        .put(`${GLOBAL_ROUTE_ORDER}/changeStateFordward`)
+        .send({
+            _id: order.body._id
+        })
+        .then(res => {
+            expect(res.body.stateCounter).toEqual(2);
+        })
+
+        await request(app)
+        .put(`${GLOBAL_ROUTE_ORDER}/changeStateBackward`)
+        .send({
+            _id: order.body._id
+        })
+        .then(res => {
+            expect(res.body.stateCounter).toEqual(1);
+        })
+
+    });
+});

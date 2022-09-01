@@ -26,7 +26,7 @@ const schema = new mongoose.Schema({
     },
     client:{
         type: Object,
-        required: true,
+        required: false,
     },
     state:{
         type: String,
@@ -45,10 +45,16 @@ const schema = new mongoose.Schema({
 
 
  class order{
-    constructor(Client){
+
+    setClient(Client){
         this.client = Client;
+
+    }
+    setState(StateCounter){
+        this.stateCounter = StateCounter;
         this.state = production_stage[this.stateCounter];
     }
+
     moveForward(){
         if(this.state != production_stage[production_stage.length() - 1] ){
             this.stateCounter++;

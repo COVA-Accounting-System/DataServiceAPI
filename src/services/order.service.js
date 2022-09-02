@@ -1,38 +1,38 @@
-import {Order} from "../models/order.model.js"
-import _orderRepository from "../data/order.repository.js"
+import { Order } from "../models/order.model.js";
+import _orderRepository from "../data/order.repository.js";
 
-export default class orderService{
-    constructor(){
-        this.orderRepository = new _orderRepository(Order);
+export default class orderService {
+  constructor() {
+    this.orderRepository = new _orderRepository(Order);
+  }
+  async createOrder(data) {
+    const newOrder = new Order();
+    if (data.body.client) {
+      newOrder.setClient(data.body.client);
     }
-    async createOrder(data){
-        const newOrder = new Order();
-        if(data.body.client) {
-            newOrder.setClient(data.body.client);
-        }
-        if(data.body.stateCounter){
-            newOrder.setState(data.body.stateCounter);
-        }
-        return this.orderRepository.createOrders(newOrder);
+    if (data.body.stateCounter) {
+      newOrder.setState(data.body.stateCounter);
     }
-    
-    async getOrders(){
-        return this.orderRepository.getOrders();
-    }
+    return this.orderRepository.createOrders(newOrder);
+  }
 
-    async getOrder(query){
-        return this.orderRepository.getOrder(query);
-    }
+  async getOrders() {
+    return this.orderRepository.getOrders();
+  }
 
-    async changeStateBackward(data){
-        const orderToChange = await this.orderRepository.getOrder(data.body);
-        orderToChange.moveBackward();
-        return this.orderRepository.updateOrder(data.body, orderToChange);
-    }
+  async getOrder(query) {
+    return this.orderRepository.getOrder(query);
+  }
 
-    async changeStateFordward(data){
-        const orderToChange = await this.orderRepository.getOrder(data.body);
-        orderToChange.moveForward();
-        return this.orderRepository.updateOrder(data.body, orderToChange);
-    }
+  async changeStateBackward(data) {
+    const orderToChange = await this.orderRepository.getOrder(data.body);
+    orderToChange.moveBackward();
+    return this.orderRepository.updateOrder(data.body, orderToChange);
+  }
+
+  async changeStateFordward(data) {
+    const orderToChange = await this.orderRepository.getOrder(data.body);
+    orderToChange.moveForward();
+    return this.orderRepository.updateOrder(data.body, orderToChange);
+  }
 }

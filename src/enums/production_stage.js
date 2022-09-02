@@ -6,8 +6,8 @@
 // }
 
 export const production_stage = [
-    "On hold",
-    "In production",
-    "Finished",
-    "Sold"
-]
+  "On hold",
+  "In production",
+  "Finished",
+  "Sold",
+];

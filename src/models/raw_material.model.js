@@ -1,35 +1,35 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const schema = new mongoose.Schema({
-    name:{
-        required: true,
-        type: String,
-        trim: true
+const schema = new mongoose.Schema(
+  {
+    name: {
+      required: true,
+      type: String,
+      trim: true,
     },
-    amount:{
-        type: String,
-        required: true,
-        trim: true
+    amount: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    unit:{
-        type: String,
-        required: true,
-        trim: true
+    unit: {
+      type: String,
+      required: true,
+      trim: true,
     },
     isVisible: {
-        type: Boolean,
-        default: true,
-        required: true
-    }
-},{
+      type: Boolean,
+      default: true,
+      required: true,
+    },
+  },
+  {
     versionKey: false,
-    timestamps: true
-})
+    timestamps: true,
+  }
+);
 
-
-class rawMaterial{
-
-}
+class rawMaterial {}
 
 schema.loadClass(rawMaterial);
-export const RawMaterial = mongoose.model('RawMaterial', schema);
+export const RawMaterial = mongoose.model("RawMaterial", schema);

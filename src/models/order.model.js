@@ -56,7 +56,7 @@ class order {
   }
 
   moveForward() {
-    if (this.state != production_stage[production_stage.length() - 1]) {
+    if (this.state != production_stage[production_stage.length - 1]) {
       this.stateCounter++;
       this.state = production_stage[this.stateCounter];
     }

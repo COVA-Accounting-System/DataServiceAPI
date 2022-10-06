@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/query", async (req, res) => {
+router.put("/delete", async (req, res) => {
   try {
     const client = await clientService.updateClientVisibility(req);
     res.json(client);
@@ -41,7 +41,16 @@ router.put("/query", async (req, res) => {
   }
 });
 
-router.delete("/query", async (req, res) => {
+router.put("/update", async (req, res) => {
+  try {
+    const client = await clientService.updateClient(req);
+    res.json(client);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/delete", async (req, res) => {
   try {
     await clientService.deleteClient(req);
     res.send("This client was deleted");

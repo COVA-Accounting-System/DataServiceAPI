@@ -30,6 +30,13 @@ export default class clientService {
     return this.clientRepository.updateClient(query, queryToUpdateWith);
   }
 
+  async updateClient(data){
+    // const client = {...data.body};
+    const {_id, ...queryToUpdateWith} = data.body;
+    const query = {_id};
+    return this.clientRepository.updateClient(query, queryToUpdateWith);
+  }
+
   async deleteClient(data) {
     const query = data.body;
     return this.clientRepository.deleteClient(query);

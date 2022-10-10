@@ -22,9 +22,19 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/query", async (req, res) => {
+router.put("/delete", async (req, res) => {
   try {
     const product = await productService.updateProductVisibility(req);
+    res.json(product);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+
+router.put("/update", async (req, res) => {
+  try {
+    const product = await productService.updateProduct(req);
     res.json(product);
   } catch (err) {
     console.error(err);

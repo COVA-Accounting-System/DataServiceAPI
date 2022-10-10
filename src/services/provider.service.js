@@ -23,8 +23,14 @@ export default class providerService {
   }
 
   async updateProviderVisibility(data) {
-    const query = data.body;
+    const query = {_id: data.body._id};
     const queryToUpdateWith = { isVisible: false };
+    return this.providerRepository.updateProvider(query, queryToUpdateWith);
+  }
+
+  async updateProvider(data){
+    const {_id, ...queryToUpdateWith} = data.body;
+    const query = {_id};
     return this.providerRepository.updateProvider(query, queryToUpdateWith);
   }
 

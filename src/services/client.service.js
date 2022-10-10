@@ -25,7 +25,7 @@ export default class clientService {
   }
 
   async updateClientVisibility(data) {
-    const query = data.body;
+    const query = {_id: data.body._id};
     const queryToUpdateWith = { isVisible: false };
     return this.clientRepository.updateClient(query, queryToUpdateWith);
   }

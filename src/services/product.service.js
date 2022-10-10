@@ -22,8 +22,14 @@ export default class productService {
   }
 
   async updateProductVisibility(data) {
-    const query = data.body;
+    const query = {_id: data.body._id};
     const queryToUpdateWith = { isVisible: false };
+    return this.productRepository.updateProduct(query, queryToUpdateWith);
+  }
+
+  async updateProduct(data){
+    const {_id, ...queryToUpdateWith} = data.body;
+    const query = {_id};
     return this.productRepository.updateProduct(query, queryToUpdateWith);
   }
 

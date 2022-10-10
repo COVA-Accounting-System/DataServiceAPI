@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/query", async (req, res) => {
+router.put("/delete", async (req, res) => {
   try {
     const employee = await employeeService.updateEmployeeVisibility(req);
     res.json(employee);
@@ -31,7 +31,16 @@ router.put("/query", async (req, res) => {
   }
 });
 
-router.delete("/query", async (req, res) => {
+router.put("/update", async (req, res) => {
+  try {
+    const employee = await employeeService.updateEmployee(req);
+    res.json(employee);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+router.delete("/delete", async (req, res) => {
   try {
     await employeeService.deleteEmployee(req);
     res.send("This employee was deleted");

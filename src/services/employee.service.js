@@ -24,8 +24,14 @@ export default class employeeService {
   }
 
   async updateEmployeeVisibility(data) {
-    const query = data.body;
+    const query = {_id: data.body._id};
     const queryToUpdateWith = { isVisible: false };
+    return this.employeeRepository.updateEmployee(query, queryToUpdateWith);
+  }
+
+  async updateEmployee(data){
+    const {_id, ...queryToUpdateWith} = data.body;
+    const query = {_id};
     return this.employeeRepository.updateEmployee(query, queryToUpdateWith);
   }
 

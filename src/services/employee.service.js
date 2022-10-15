@@ -6,19 +6,14 @@ export default class employeeService {
     this.employeeRepository = new _employeeRepository(Employee);
   }
 
-  async getEmployees() {
-    return this.employeeRepository.getEmployees();
+  async getEmployees(data) {
+    const query = { userId: data.userId, isVisible: true }
+    return this.employeeRepository.getEmployees(query);
   }
 
   async createEmployee(data) {
     const newEmployee = new Employee({
-      name: data.body.name,
-      lastName: data.body.lastName,
-      ci: data.body.ci,
-      nationality: data.body.nationality,
-      dateOfBirth: data.body.dateOfBirth,
-      phone: data.body.phone,
-      startDate: data.body.startDate,
+      ...data.body, userId: data.userId
     });
     return this.employeeRepository.createEmployee(newEmployee);
   }

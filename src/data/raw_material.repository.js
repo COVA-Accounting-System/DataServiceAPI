@@ -7,8 +7,8 @@ export default class rawMaterialRepository {
     return this.RawMaterial.findOne(query);
   }
 
-  async getRawMaterials() {
-    return this.RawMaterial.find();
+  async getRawMaterials(query) {
+    return this.RawMaterial.find(query);
   }
 
   async createRawMaterial(newRawMaterial) {

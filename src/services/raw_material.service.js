@@ -6,15 +6,14 @@ export default class rawMaterialService {
     this.rawMaterialRepository = new _rawMaterialRepository(RawMaterial);
   }
 
-  async getRawMaterials() {
-    return this.rawMaterialRepository.getRawMaterials();
+  async getRawMaterials(data) {
+    const query = { userId: data.userId, isVisible: true }
+    return this.rawMaterialRepository.getRawMaterials(query);
   }
 
   async createRawMaterial(data) {
     const newRawMaterial = new RawMaterial({
-      name: data.body.name,
-      amount: data.body.amount,
-      unit: data.body.unit,
+      ...data.body, userId: data.userId
     });
     return this.rawMaterialRepository.createRawMaterial(newRawMaterial);
   }

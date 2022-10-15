@@ -7,8 +7,8 @@ export default class orderRepository {
     return this.Order.findOne(query);
   }
 
-  async getOrders() {
-    return this.Order.find();
+  async getOrders(query) {
+    return this.Order.find(query);
   }
   async createOrders(newOrder) {
     return newOrder.save();

@@ -6,17 +6,14 @@ export default class productService {
     this.productRepository = new _productRespository(Product);
   }
 
-  async getProducts() {
-    return this.productRepository.getProducts();
+  async getProducts(data) {
+    const query = { userId: data.userId, isVisible: true }
+    return this.productRepository.getProducts(query);
   }
 
   async createProduct(data) {
     const newProduct = new Product({
-      name: data.body.name,
-      description: data.body.description,
-      photography: data.body.photography,
-      unitPrice: data.body.unitPrice,
-      dozenPrice: data.body.dozenPrice,
+      ...data.body, userId: data.userId
     });
     return this.productRepository.createProduct(newProduct);
   }

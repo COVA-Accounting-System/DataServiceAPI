@@ -11,8 +11,8 @@ export default class productRepository {
     return newProduct.save();
   }
 
-  async getProducts() {
-    return this.Product.find();
+  async getProducts(query) {
+    return this.Product.find(query);
   }
 
   async updateProduct(query, queryToUpdateWith) {

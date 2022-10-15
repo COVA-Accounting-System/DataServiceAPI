@@ -16,8 +16,9 @@ export default class orderService {
     return this.orderRepository.createOrders(newOrder);
   }
 
-  async getOrders() {
-    return this.orderRepository.getOrders();
+  async getOrders(data) {
+    const query = { userId: data.userId, isVisible: true }
+    return this.orderRepository.getOrders(query);
   }
 
   async getOrder(query) {

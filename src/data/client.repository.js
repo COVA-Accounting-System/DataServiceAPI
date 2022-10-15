@@ -2,8 +2,8 @@ export default class clientRepository {
   constructor(Client) {
     this.Client = Client;
   }
-  async getClients() {
-    return this.Client.find();
+  async getClients(query) {
+    return this.Client.find(query);
   }
 
   async getClient(query) {

@@ -7,8 +7,8 @@ export default class providerRepository {
     return this.Provider.findOne(query);
   }
 
-  async getProviders() {
-    return this.Provider.find();
+  async getProviders(query) {
+    return this.Provider.find(query);
   }
 
   async createProvider(newProvider) {

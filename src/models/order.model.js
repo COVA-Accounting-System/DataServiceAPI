@@ -39,6 +39,9 @@ const schema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId
+    },
   },
   {
     versionKey: false,

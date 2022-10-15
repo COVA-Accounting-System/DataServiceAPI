@@ -2,8 +2,8 @@ export default class employeeRepository {
   constructor(Employee) {
     this.Employee = Employee;
   }
-  async getEmployees() {
-    return this.Employee.find();
+  async getEmployees(query) {
+    return this.Employee.find(query);
   }
 
   async createEmployee(newEmployee) {

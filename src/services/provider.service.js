@@ -6,18 +6,14 @@ export default class providerService {
     this.providerRepository = new _providerRepository(Provider);
   }
 
-  async getProviders() {
-    return this.providerRepository.getProviders();
+  async getProviders(data) {
+    const query = { userId: data.userId, isVisible: true }
+    return this.providerRepository.getProviders(query);
   }
 
   async createProviders(data) {
     const newProvider = new Provider({
-      storeName: data.body.storeName,
-      city: data.body.city,
-      country: data.body.country,
-      phone: data.body.phone,
-      nit: data.body.nit,
-      address: data.body.address,
+      ...data.body, userId: data.userId
     });
     return this.providerRepository.createProvider(newProvider);
   }

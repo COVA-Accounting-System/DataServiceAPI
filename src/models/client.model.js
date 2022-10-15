@@ -22,6 +22,9 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId
+    },
     isVisible: {
       type: Boolean,
       default: true,

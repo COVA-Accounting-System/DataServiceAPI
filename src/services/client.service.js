@@ -1,13 +1,17 @@
 import _clientRepository from "../data/client.repository.js";
 import { Client } from "../models/client.model.js";
+import { config } from "dotenv";
+import jwt from "jsonwebtoken"
+config()
 
 export default class clientService {
   constructor() {
     this.clientRepository = new _clientRepository(Client);
   }
 
-  async getClients() {
-    return this.clientRepository.getClients();
+  async getClients(data) {
+    const query = { userId: data.userId, isVisible: true }
+    return this.clientRepository.getClients(query);
   }
 
   async getClient(data) {
@@ -16,10 +20,7 @@ export default class clientService {
 
   async createClient(data) {
     const newClient = new Client({
-      name: data.body.name,
-      lastName: data.body.lastName,
-      phone: data.body.phone,
-      inDebt: data.body.inDebt,
+      ...data.body, userId: data.userId
     });
     return this.clientRepository.createClient(newClient);
   }

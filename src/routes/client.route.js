@@ -2,12 +2,13 @@
 import _clientService from "../services/client.service.js";
 import { Router } from "express";
 
+
 const router = Router();
 const clientService = new _clientService();
 
 router.get("/", async (req, res) => {
   try {
-    const clients = await clientService.getClients();
+    const clients = await clientService.getClients(req);
     res.json(clients);
   } catch (error) {
     console.error(error);
@@ -58,5 +59,6 @@ router.delete("/delete", async (req, res) => {
     console.error(err);
   }
 });
+
 
 export default router;

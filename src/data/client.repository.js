@@ -1,20 +1,26 @@
-import {Client} from "../models/client.model.js"
-
-
 export default class clientRepository {
-    
-    async getClients(){
-        return Client.find();
-    }
+  constructor(Client) {
+    this.Client = Client;
+  }
+  async getClients(query) {
+    return this.Client.find(query);
+  }
 
-    async createClient(data){
-        const newClient = new Client({
-            name: data.body.name,
-            lastName: data.body.lastName,
-            phone: data.body.phone,
-            inDebt: data.body.inDebt
-        });
-        return newClient.save();
-    }
-    
+  async getClient(query) {
+    return this.Client.findOne(query);
+  }
+
+  async createClient(newClient) {
+    return newClient.save();
+  }
+
+  async updateClient(query, queryToUpdateWith) {
+    await this.Client.findOneAndUpdate(query, queryToUpdateWith);
+    return this.getClient(query);
+  }
+
+  async deleteClient(query) {
+    await this.Client.findOneAndDelete(query);
+    return `This client was deleted`;
+  }
 }

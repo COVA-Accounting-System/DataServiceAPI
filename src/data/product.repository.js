@@ -1,18 +1,27 @@
-import {Product} from "../models/product.model.js"
+export default class productRepository {
+  constructor(Product) {
+    this.Product = Product;
+  }
 
-export default class productRepository{
-    
-    async createProduct(data){
-        const newProduct = new Product({
-            name: data.body.name,
-            photography: data.body.photography,
-            unitPrice: data.body.unitPrice,
-            dozenPrice: data.body.dozenPrice
-        });
-        return newProduct.save();
-    }
+  async getProduct(query) {
+    return this.Product.findOne(query);
+  }
 
-    async getProdutcs(){
-        return Product.find();
-    }
+  async createProduct(newProduct) {
+    return newProduct.save();
+  }
+
+  async getProducts(query) {
+    return this.Product.find(query);
+  }
+
+  async updateProduct(query, queryToUpdateWith) {
+    await this.Product.findOneAndUpdate(query, queryToUpdateWith);
+    return this.getProduct(query);
+  }
+
+  async deleteProduct(query) {
+    await this.Product.findOneAndDelete(query);
+    return `This product was deleted`;
+  }
 }

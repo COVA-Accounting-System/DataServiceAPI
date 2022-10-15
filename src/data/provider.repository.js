@@ -1,17 +1,27 @@
-import {Provider} from "../models/provider.model.js"
+export default class providerRepository {
+  constructor(Provider) {
+    this.Provider = Provider;
+  }
 
-export default class providerRepository{
-    
-    async getProviders(){
-        return Provider.find();
-    }
+  async getProvider(query) {
+    return this.Provider.findOne(query);
+  }
 
-    async createProvider(data){
-        const newProvider = new Provider({
-            name: data.body.name,
-            product: data.body.product,
-            phone: data.body.phone
-        });
-        return newProvider.save();
-    }
+  async getProviders(query) {
+    return this.Provider.find(query);
+  }
+
+  async createProvider(newProvider) {
+    return newProvider.save();
+  }
+
+  async updateProvider(query, queryToUpdateWith) {
+    await this.Provider.findOneAndUpdate(query, queryToUpdateWith);
+    return this.getProvider(query);
+  }
+
+  async deleteProvider(query) {
+    await this.Provider.findOneAndDelete(query);
+    return `This provider was deleted`;
+  }
 }

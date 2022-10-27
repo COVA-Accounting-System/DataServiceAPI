@@ -4,29 +4,23 @@ import { production_stage } from "../enums/production_stage.js";
 
 const schema = new mongoose.Schema(
   {
+    orderName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     creationDate: {
       type: String,
       required: true,
       default: new Date(Date.now()).toLocaleDateString(),
       trim: true,
     },
-    productionDate: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    completionDate: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    soldDate: {
-      type: String,
-      required: false,
-      trim: true,
-    },
     client: {
-      type: Object,
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
       required: false,
     },
     state: {

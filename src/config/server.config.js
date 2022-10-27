@@ -22,11 +22,11 @@ app.get("/", (req, res) => {
   res.json({ message: `welcome to inventory-api` });
 });
 
-app.use("/api/inventory/client", verifyToken, client);
-app.use("/api/inventory/employee", verifyToken, employee);
-app.use("/api/inventory/product", verifyToken, product);
-app.use("/api/inventory/provider", verifyToken, provider);
+app.use("/api/contact/client", verifyToken, client);
+app.use("/api/contact/employee", verifyToken, employee);
+app.use("/api/product", verifyToken, product);
+app.use("/api/contact/provider", verifyToken, provider);
 app.use("/api/inventory/raw_material", verifyToken, raw_material);
-app.use("/api/inventory/order", verifyToken, order);
+app.use("/api/order", verifyToken, order);
 
 export default app;

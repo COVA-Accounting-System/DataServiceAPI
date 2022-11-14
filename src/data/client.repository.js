@@ -1,26 +1,27 @@
 export default class clientRepository {
-  constructor(Client) {
-    this.Client = Client;
-  }
-  async getClients(query) {
-    return this.Client.find(query);
+  constructor (Client) {
+    this.Client = Client
   }
 
-  async getClient(query) {
-    return this.Client.findOne(query);
+  async getClients (query) {
+    return this.Client.find(query)
   }
 
-  async createClient(newClient) {
-    return newClient.save();
+  async getClient (query) {
+    return this.Client.findOne(query)
   }
 
-  async updateClient(query, queryToUpdateWith) {
-    await this.Client.findOneAndUpdate(query, queryToUpdateWith);
-    return this.getClient(query);
+  async createClient (newClient) {
+    return newClient.save()
   }
 
-  async deleteClient(query) {
-    await this.Client.findOneAndDelete(query);
-    return `This client was deleted`;
+  async updateClient (query, queryToUpdateWith) {
+    await this.Client.findOneAndUpdate(query, queryToUpdateWith)
+    return this.getClient(query)
+  }
+
+  async deleteClient (query) {
+    await this.Client.findOneAndDelete(query)
+    return 'This client was deleted'
   }
 }

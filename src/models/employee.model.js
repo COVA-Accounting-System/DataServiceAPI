@@ -1,42 +1,42 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     lastName: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     phone: {
       type: Number,
       required: false,
-      trim: true,
+      trim: true
     },
     ci: {
       type: Number,
       required: true,
-      trim: true,
+      trim: true
     },
     startDate: {
       type: String,
       default: new Date(Date.now()).toLocaleDateString(),
       required: false,
-      trim: true,
+      trim: true
     },
     nationality: {
       type: String,
       required: false,
-      trim: true,
+      trim: true
     },
     dateOfBirth: {
       type: String,
       required: false,
-      trim: true,
+      trim: true
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId
@@ -44,16 +44,16 @@ const schema = new mongoose.Schema(
     isVisible: {
       type: Boolean,
       default: true,
-      required: true,
-    },
+      required: true
+    }
   },
   {
     versionKey: false,
-    timestamps: true,
+    timestamps: true
   }
-);
+)
 
 class employee {}
 
-schema.loadClass(employee);
-export const Employee = mongoose.model("Employee", schema);
+schema.loadClass(employee)
+export const Employee = mongoose.model('Employee', schema)

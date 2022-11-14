@@ -1,45 +1,45 @@
-import { Router } from "express";
-import _rawMaterialService from "../services/raw_material.service.js";
+import { Router } from 'express'
+import _rawMaterialService from '../services/raw_material.service.js'
 
-const router = Router();
-const rawMaterialService = new _rawMaterialService();
+const router = Router()
+const rawMaterialService = new _rawMaterialService()
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const rawMaterials = await rawMaterialService.getRawMaterials(req);
-    res.json(rawMaterials);
+    const rawMaterials = await rawMaterialService.getRawMaterials(req)
+    res.json(rawMaterials)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const newRawMaterial = await rawMaterialService.createRawMaterial(req);
-    res.json(newRawMaterial);
+    const newRawMaterial = await rawMaterialService.createRawMaterial(req)
+    res.json(newRawMaterial)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.put("/query", async (req, res) => {
+router.put('/query', async (req, res) => {
   try {
     const rawMaterial = await rawMaterialService.updateRawMaterialVisibility(
       req
-    );
-    res.json(rawMaterial);
+    )
+    res.json(rawMaterial)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.delete("/query", async (req, res) => {
+router.delete('/query', async (req, res) => {
   try {
-    await rawMaterialService.deleteRawMaterial(req);
-    res.send("This raw material was deleted");
+    await rawMaterialService.deleteRawMaterial(req)
+    res.send('This raw material was deleted')
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-export default router;
+export default router

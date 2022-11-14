@@ -1,27 +1,27 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     lastName: {
       type: String,
       required: false,
-      trim: true,
+      trim: true
     },
     phone: {
       type: Number,
       required: false,
-      trim: true,
+      trim: true
     },
     inDebt: {
       type: Number,
       required: true,
       default: 0,
-      trim: true,
+      trim: true
     },
     address: {
       type: String,
@@ -34,16 +34,16 @@ const schema = new mongoose.Schema(
     isVisible: {
       type: Boolean,
       default: true,
-      required: true,
-    },
+      required: true
+    }
   },
   {
     versionKey: false,
-    timestamps: true,
+    timestamps: true
   }
-);
+)
 
 class client {}
 
-schema.loadClass(client);
-export const Client = mongoose.model("Client", schema);
+schema.loadClass(client)
+export const Client = mongoose.model('Client', schema)

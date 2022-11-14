@@ -1,7 +1,6 @@
 import _clientRepository from "../data/client.repository.js";
 import { Client } from "../models/client.model.js";
 import { config } from "dotenv";
-import jwt from "jsonwebtoken"
 config()
 
 export default class clientService {

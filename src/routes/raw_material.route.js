@@ -6,7 +6,7 @@ const rawMaterialService = new _rawMaterialService();
 
 router.get("/", async (req, res) => {
   try {
-    const rawMaterials = await rawMaterialService.getRawMaterials();
+    const rawMaterials = await rawMaterialService.getRawMaterials(req);
     res.json(rawMaterials);
   } catch (err) {
     console.error(err);

@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const employees = await employeeService.getEmployees();
+    const employees = await employeeService.getEmployees(req);
     res.json(employees);
   } catch (err) {
     console.error(err);

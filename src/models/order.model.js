@@ -4,8 +4,8 @@ import { production_stage } from "../enums/production_stage.js";
 
 const schema = new mongoose.Schema(
   {
-    orderName: {
-      type: String,
+    orderNumber: {
+      type: Number,
       required: true,
       trim: true,
     },
@@ -18,14 +18,32 @@ const schema = new mongoose.Schema(
     client: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      trim: true,
     },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
+    dataTable: [{
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        trim: true,
+      },
+      amount: {
+        type: Number,
+        trim: true,
+      },
+      price: {
+        type: Number,
+        trim: true,
+      },
+  }],
+    totalPrice: {
+      type: Number,
       required: false,
+      trim: true,
     },
     state: {
       type: String,
-      required: false,
+      required: true,
+      default: production_stage[0],
     },
     stateCounter: {
       type: Number,
@@ -34,8 +52,13 @@ const schema = new mongoose.Schema(
       default: 0,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId
+      type: mongoose.Schema.Types.ObjectId,
     },
+    isVisible: {
+      type: Boolean,
+      required: true,
+      default: true,
+    }
   },
   {
     versionKey: false,

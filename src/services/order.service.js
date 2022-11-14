@@ -6,18 +6,15 @@ export default class orderService {
     this.orderRepository = new _orderRepository(Order);
   }
   async createOrder(data) {
-    const newOrder = new Order();
-    if (data.body.client) {
-      newOrder.setClient(data.body.client);
-    }
-    if (data.body.stateCounter) {
-      newOrder.setState(data.body.stateCounter);
-    }
+    const sumTotalPrice = data.body.dataTable.reduce((sum, product) => {
+      return sum + product.price;
+    }, 0);
+    const newOrder = new Order({ ...data.body, userId: data.userId, totalPrice: sumTotalPrice });
     return this.orderRepository.createOrders(newOrder);
   }
 
   async getOrders(data) {
-    const query = { userId: data.userId, isVisible: true }
+    const query = { userId: data.userId, isVisible: true };
     return this.orderRepository.getOrders(query);
   }
 

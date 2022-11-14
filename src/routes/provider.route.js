@@ -6,7 +6,7 @@ const providerService = new _providerService();
 
 router.get("/", async (req, res) => {
   try {
-    const providers = await providerService.getProviders();
+    const providers = await providerService.getProviders(req);
     res.json(providers);
   } catch (err) {
     console.error(err);

@@ -1,7 +1,7 @@
 // import app from "../config/server.config.js"
 import _clientService from "../services/client.service.js";
 import { Router } from "express";
-
+import { validateClientData } from "../middleware/validateData.middleware.js";
 
 const router = Router();
 const clientService = new _clientService();
@@ -24,7 +24,7 @@ router.get("/query", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateClientData, async (req, res) => {
   try {
     const newClient = await clientService.createClient(req);
     res.json(newClient);
@@ -50,6 +50,7 @@ router.put("/update", async (req, res) => {
     console.error(err);
   }
 });
+
 
 router.delete("/delete", async (req, res) => {
   try {

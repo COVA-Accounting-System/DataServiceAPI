@@ -20,7 +20,13 @@ const schema = new mongoose.Schema(
     inDebt: {
       type: Number,
       required: true,
+      default: 0,
       trim: true,
+    },
+    address: {
+      type: String,
+      required: false,
+      trim: true
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId

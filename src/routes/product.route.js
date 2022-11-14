@@ -6,7 +6,7 @@ const productService = new _productService();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productService.getProducts();
+    const products = await productService.getProducts(req);
     res.json(products);
   } catch (err) {
     console.error(err);
@@ -30,7 +30,6 @@ router.put("/delete", async (req, res) => {
     console.error(err);
   }
 });
-
 
 router.put("/update", async (req, res) => {
   try {

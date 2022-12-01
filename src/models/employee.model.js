@@ -12,8 +12,13 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    phone: {
-      type: Number,
+    phoneNumber: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    phoneCountryCode: {
+      type: String,
       required: false,
       trim: true
     },
@@ -24,7 +29,7 @@ const schema = new mongoose.Schema(
     },
     startDate: {
       type: String,
-      default: new Date(Date.now()).toLocaleDateString(),
+      // default: new Date(Date.now()).toLocaleDateString(),
       required: false,
       trim: true
     },
@@ -33,7 +38,7 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
-    dateOfBirth: {
+    Birthday: {
       type: String,
       required: false,
       trim: true

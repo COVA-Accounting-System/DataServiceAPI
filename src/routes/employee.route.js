@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import _employeeService from '../services/employee.service.js'
+import { validateEmployeeData } from '../middleware/validateData.middleware.js'
 
 const employeeService = new _employeeService()
 const router = Router()
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', validateEmployeeData, async (req, res) => {
   try {
     const newEmployee = await employeeService.createEmployee(req)
     res.json(newEmployee)

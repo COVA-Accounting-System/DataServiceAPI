@@ -12,15 +12,14 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
-    phone: {
-      type: Number,
+    phoneNumber: {
+      type: String,
       required: false,
       trim: true
     },
-    inDebt: {
-      type: Number,
-      required: true,
-      default: 0,
+    phoneCountryCode:{
+      type: String,
+      required: false,
       trim: true
     },
     address: {

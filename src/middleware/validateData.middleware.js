@@ -27,7 +27,7 @@ export const validateEmployeeData = (req, res, next) => {
     phoneCountryCode: Joi.string().allow(''),
     ci: Joi.number().required(),
     startDate: Joi.date().allow(''),
-    birthday: Joi.date().allow(''),
+    birthday: Joi.date().allow('')
   })
   const { error } = schema.validate(req.body)
 

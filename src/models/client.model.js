@@ -17,7 +17,7 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
-    phoneCountryCode:{
+    phoneCountryCode: {
       type: String,
       required: false,
       trim: true

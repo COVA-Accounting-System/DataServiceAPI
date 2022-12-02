@@ -38,7 +38,7 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
-    Birthday: {
+    birthday: {
       type: String,
       required: false,
       trim: true

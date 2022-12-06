@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import _providerService from '../services/provider.service.js'
+import { validateProviderData } from '../middleware/validateData.middleware.js'
 
 const router = Router()
 const providerService = new _providerService()
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', validateProviderData, async (req, res) => {
   try {
     const newProvider = await providerService.createProviders(req)
     res.json(newProvider)

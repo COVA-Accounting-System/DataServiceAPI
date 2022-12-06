@@ -7,7 +7,7 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    city: {
+    nit: {
       type: String,
       required: false,
       trim: true
@@ -17,13 +17,18 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
-    phone: {
-      type: Number,
+    city: {
+      type: String,
       required: false,
       trim: true
     },
-    nit: {
-      type: Number,
+    phoneCountryCode: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    phoneNumber: {
+      type: String,
       required: false,
       trim: true
     },

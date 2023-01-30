@@ -46,7 +46,27 @@ export const validateProviderData = (req, res, next) => {
     city: Joi.string().max(50).allow(''),
     phoneNumber: Joi.string().allow(''),
     phoneCountryCode: Joi.string().allow(''),
-    address: Joi.string().max(100).allow(''),
+    address: Joi.string().max(100).allow('')
+  })
+  const { error } = schema.validate(req.body)
+
+  if (error) {
+    console.log(error.details[0].message)
+    return res.status(400).json({ message: error.details[0].message })
+  }
+  next()
+}
+
+export const validateProductData = (req, res, next) => {
+  console.log(req.body)
+  const schema = Joi.object({
+    productName: Joi.string().max(50).required(),
+    productType: Joi.string().max(50).required(),
+    productPrice: Joi.number().required(),
+    productDozenPrice: Joi.number().required(),
+    productFeatures: Joi.array().items(Joi.object({
+      description: Joi.string()
+    }))
   })
   const { error } = schema.validate(req.body)
 

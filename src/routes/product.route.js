@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import _productService from '../services/product.service.js'
+import { validateProductData } from '../middleware/validateData.middleware.js'
 
 const router = Router()
 const productService = new _productService()
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', validateProductData, async (req, res) => {
   try {
     const newProduct = await productService.createProduct(req)
     res.json(newProduct)

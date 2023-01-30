@@ -2,29 +2,38 @@ import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
-    name: {
+    productName: {
       type: String,
       required: true,
       trim: true
     },
-    description: {
+    productFeatures: [
+      {
+        description: {
+          type: String,
+          required: false,
+          trim: true
+        }
+      }
+    ],
+    // photography: {
+    //   type: String,
+    //   required: false,
+    //   trim: true
+    // },
+    productType: {
       type: String,
-      required: false,
+      required: true,
       trim: true
     },
-    photography: {
-      type: String,
-      required: false,
-      trim: true
-    },
-    unitPrice: {
+    productPrice: {
       type: Number,
-      required: false,
+      required: true,
       trim: true
     },
-    dozenPrice: {
+    productDozenPrice: {
       type: Number,
-      required: false,
+      required: true,
       trim: true
     },
     userId: {

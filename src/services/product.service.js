@@ -13,7 +13,7 @@ export default class productService {
 
   async createProduct (data) {
     const newProduct = new Product({
-      ...data.body, userId: data.userId
+      ...data.body, userId: data.userId, uiName: data.body.productName
     })
     return this.productRepository.createProduct(newProduct)
   }

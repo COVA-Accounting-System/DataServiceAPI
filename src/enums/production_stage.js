@@ -6,7 +6,7 @@
 // }
 
 export const production_stage = [
-  'In queque',
+  'Pending',
   'In production',
   'Finished',
   'Sold'

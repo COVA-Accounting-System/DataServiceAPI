@@ -23,6 +23,15 @@ router.post('/', validateOrderData, async (req, res) => {
   }
 })
 
+router.put('/delete', async (req, res) => {
+  try {
+    const order = await orderService.updateOrderVisibility(req)
+    res.json(order)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.put('/changeStateBackward', async (req, res) => {
   try {
     const newOrder = await orderService.changeStateBackward(req)

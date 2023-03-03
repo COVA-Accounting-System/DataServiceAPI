@@ -1,56 +1,77 @@
 import mongoose from 'mongoose'
-import { Client } from '../models/client.model.js'
-import { production_stage } from '../enums/production_stage.js'
+import { productionStage } from '../enums/productionStage.js'
 
 const schema = new mongoose.Schema(
   {
+    orderClient: {
+      uiName: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true
+      }
+    },
+    orderProduct: {
+      uiName: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true
+      }
+    },
     orderNumber: {
       type: Number,
       required: true,
       trim: true
     },
-    creationDate: {
-      type: String,
-      required: true,
-      default: new Date(Date.now()).toLocaleDateString(),
-      trim: true
-    },
-    client: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      trim: true
-    },
-    dataTable: [{
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        trim: true
-      },
-      amount: {
-        type: Number,
-        trim: true
-      },
-      price: {
-        type: Number,
-        trim: true
-      }
-    }],
-    totalPrice: {
+    orderProductAmount: {
       type: Number,
       required: false,
       trim: true
     },
-    state: {
+    orderProductAmountType: {
       type: String,
       required: true,
-      default: production_stage[0]
+      trim: true
     },
-    stateCounter: {
+    orderPrice: {
       type: Number,
       trim: true,
       required: true,
       default: 0
     },
+    orderCreationDate: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    orderDeliveryDate: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    orderState: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    orderFeatures: [
+      {
+        description: {
+          type: String,
+          required: false,
+          trim: true
+        }
+      }
+    ],
     userId: {
       type: mongoose.Schema.Types.ObjectId
     },
@@ -67,26 +88,22 @@ const schema = new mongoose.Schema(
 )
 
 class order {
-  setClient (Client) {
-    this.client = Client
-  }
-
   setState (StateCounter) {
     this.stateCounter = StateCounter
-    this.state = production_stage[this.stateCounter]
+    this.state = productionStage[this.stateCounter]
   }
 
   moveForward () {
-    if (this.state != production_stage[production_stage.length - 1]) {
+    if (this.state !== productionStage[productionStage.length - 1]) {
       this.stateCounter++
-      this.state = production_stage[this.stateCounter]
+      this.state = productionStage[this.stateCounter]
     }
   }
 
   moveBackward () {
-    if (this.state != production_stage[0]) {
+    if (this.state !== productionStage[0]) {
       this.stateCounter--
-      this.state = production_stage[this.stateCounter]
+      this.state = productionStage[this.stateCounter]
     }
   }
 }

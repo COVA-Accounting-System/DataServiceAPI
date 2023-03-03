@@ -5,7 +5,7 @@
 //     sold: "Sold"
 // }
 
-export const production_stage = [
+export const productionStage = [
   'Pending',
   'In production',
   'Finished',

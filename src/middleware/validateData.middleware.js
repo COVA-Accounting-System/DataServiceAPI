@@ -64,9 +64,11 @@ export const validateProductData = (req, res, next) => {
     productType: Joi.string().max(50).required(),
     productPrice: Joi.number().required(),
     productDozenPrice: Joi.number().required(),
-    productFeatures: Joi.array().items(Joi.object({
-      description: Joi.string()
-    }))
+    productFeatures: Joi.array().items(
+      Joi.object({
+        description: Joi.string()
+      })
+    )
   })
   const { error } = schema.validate(req.body)
 
@@ -79,22 +81,29 @@ export const validateProductData = (req, res, next) => {
 
 export const validateOrderData = (req, res, next) => {
   const schema = Joi.object({
-    client: Joi.string().max(50).required(),
-    creationDate: Joi.date().required(),
+    orderClient: Joi.object({
+      uiName: Joi.string(),
+      _id: Joi.string()
+    }).required(),
+    orderProduct: Joi.object({
+      uiName: Joi.string(),
+      _id: Joi.string()
+    }).required(),
     orderNumber: Joi.number().required(),
-    dataTable: Joi.array()
-      .items(
-        Joi.object({
-          product: Joi.string().max(50).required(),
-          amount: Joi.number().required(),
-          price: Joi.number().required()
-        })
-      )
-      .required()
+    orderProductAmount: Joi.number().allow(''),
+    orderProductAmountType: Joi.string().max(50).allow(''),
+    orderPrice: Joi.number().required(),
+    orderCreationDate: Joi.date().allow(''),
+    orderDeliveryDate: Joi.date().allow(''),
+    orderState: Joi.string().max(50).allow(''),
+    orderFeatures: Joi.array().items(
+      Joi.object({
+        description: Joi.string()
+      })
+    )
   })
 
   const { error } = schema.validate(req.body)
-  // console.log(req.body)
 
   if (error) {
     return res.status(400).json({ message: error.details[0].message })

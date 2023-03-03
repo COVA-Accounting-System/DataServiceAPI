@@ -7,10 +7,7 @@ export default class orderService {
   }
 
   async createOrder (data) {
-    const sumTotalPrice = data.body.dataTable.reduce((sum, product) => {
-      return sum + product.price
-    }, 0)
-    const newOrder = new Order({ ...data.body, userId: data.userId, totalPrice: sumTotalPrice })
+    const newOrder = new Order({ ...data.body, userId: data.userId, orderState: 'Pending' })
     return this.orderRepository.createOrders(newOrder)
   }
 
@@ -21,6 +18,12 @@ export default class orderService {
 
   async getOrder (query) {
     return this.orderRepository.getOrder(query)
+  }
+
+  async updateOrderVisibility (data) {
+    const query = { _id: data.body._id }
+    const queryToUpdateWith = { isVisible: false }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
   }
 
   async changeStateBackward (data) {

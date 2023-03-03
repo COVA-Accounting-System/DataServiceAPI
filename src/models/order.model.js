@@ -16,16 +16,31 @@ const schema = new mongoose.Schema(
       }
     },
     orderProduct: {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true
+      },
       uiName: {
         type: String,
         required: true,
         trim: true
       },
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
+      productType: {
+        type: String,
         required: true,
         trim: true
       }
+      // productPrice: {
+      //   type: Number,
+      //   required: true,
+      //   trim: true
+      // },
+      // productDozenPrice: {
+      //   type: Number,
+      //   required: true,
+      //   trim: true
+      // }
     },
     orderNumber: {
       type: Number,

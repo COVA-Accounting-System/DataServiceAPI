@@ -23,6 +23,15 @@ router.post('/', validateOrderData, async (req, res) => {
   }
 })
 
+router.put('/update', async (req, res) => {
+  try {
+    const order = await orderService.updateOrder(req)
+    res.json(order)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.put('/delete', async (req, res) => {
   try {
     const order = await orderService.updateOrderVisibility(req)

@@ -86,8 +86,11 @@ export const validateOrderData = (req, res, next) => {
       _id: Joi.string()
     }).required(),
     orderProduct: Joi.object({
-      uiName: Joi.string(),
-      _id: Joi.string()
+      _id: Joi.string().required(),
+      uiName: Joi.string().required(),
+      productType: Joi.string().required()
+      // productPrice: Joi.number().required(),
+      // productDozenPrice: Joi.number().required()
     }).required(),
     orderNumber: Joi.number().required(),
     orderProductAmount: Joi.number().allow(''),

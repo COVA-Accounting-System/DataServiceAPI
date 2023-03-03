@@ -26,6 +26,12 @@ export default class orderService {
     return this.orderRepository.updateOrder(query, queryToUpdateWith)
   }
 
+  async updateOrder (data) {
+    const { _id, ...queryToUpdateWith } = data.body
+    const query = { _id }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
+  }
+
   async changeStateBackward (data) {
     const orderToChange = await this.orderRepository.getOrder(data.body)
     orderToChange.moveBackward()

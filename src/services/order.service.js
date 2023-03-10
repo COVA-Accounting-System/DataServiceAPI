@@ -1,13 +1,24 @@
 import { Order } from '../models/order.model.js'
 import _orderRepository from '../data/order.repository.js'
 
+import {
+  productionStage,
+  maxProductionStage,
+  minProductionStage
+} from '../enums/productionStage.js'
+
 export default class orderService {
   constructor () {
     this.orderRepository = new _orderRepository(Order)
   }
 
   async createOrder (data) {
-    const newOrder = new Order({ ...data.body, userId: data.userId, orderState: 'Pending' })
+    const newOrder = new Order({
+      ...data.body,
+      userId: data.userId,
+      orderState: 'On hold',
+      orderStateNumber: 0
+    })
     return this.orderRepository.createOrders(newOrder)
   }
 
@@ -33,14 +44,26 @@ export default class orderService {
   }
 
   async changeStateBackward (data) {
-    const orderToChange = await this.orderRepository.getOrder(data.body)
-    orderToChange.moveBackward()
-    return this.orderRepository.updateOrder(data.body, orderToChange)
+    if (data.body.orderStateNumber !== minProductionStage) {
+      const query = { _id: data.body._id }
+      const queryToUpdateWith = {
+        orderState: productionStage[data.body.orderStateNumber - 1].state,
+        orderStateNumber: data.body.orderStateNumber - 1
+      }
+      return this.orderRepository.updateOrder(query, queryToUpdateWith)
+    }
+    return null
   }
 
   async changeStateFordward (data) {
-    const orderToChange = await this.orderRepository.getOrder(data.body)
-    orderToChange.moveForward()
-    return this.orderRepository.updateOrder(data.body, orderToChange)
+    if (data.body.orderStateNumber !== maxProductionStage) {
+      const query = { _id: data.body._id }
+      const queryToUpdateWith = {
+        orderState: productionStage[data.body.orderStateNumber + 1].state,
+        orderStateNumber: data.body.orderStateNumber + 1
+      }
+      return this.orderRepository.updateOrder(query, queryToUpdateWith)
+    }
+    return null
   }
 }

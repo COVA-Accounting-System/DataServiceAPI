@@ -99,6 +99,7 @@ export const validateOrderData = (req, res, next) => {
     orderCreationDate: Joi.date().allow(''),
     orderDeliveryDate: Joi.date().allow(''),
     orderState: Joi.string().max(50).allow(''),
+    orderStateNumber: Joi.number().allow(''),
     orderFeatures: Joi.array().items(
       Joi.object({
         description: Joi.string()

@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { productionStage } from '../enums/productionStage.js'
 
 const schema = new mongoose.Schema(
   {
@@ -78,6 +77,11 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
+    orderStateNumber: {
+      type: Number,
+      required: false,
+      trim: true
+    },
     orderFeatures: [
       {
         description: {
@@ -102,26 +106,7 @@ const schema = new mongoose.Schema(
   }
 )
 
-class order {
-  setState (StateCounter) {
-    this.stateCounter = StateCounter
-    this.state = productionStage[this.stateCounter]
-  }
-
-  moveForward () {
-    if (this.state !== productionStage[productionStage.length - 1]) {
-      this.stateCounter++
-      this.state = productionStage[this.stateCounter]
-    }
-  }
-
-  moveBackward () {
-    if (this.state !== productionStage[0]) {
-      this.stateCounter--
-      this.state = productionStage[this.stateCounter]
-    }
-  }
-}
+class order {}
 
 schema.loadClass(order)
 export const Order = mongoose.model('Order', schema)

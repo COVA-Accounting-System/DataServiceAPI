@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import _rawMaterialService from '../services/raw_material.service.js'
+import { validateRawMaterialData } from '../middleware/validateData.middleware.js'
 
 const router = Router()
 const rawMaterialService = new _rawMaterialService()
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', validateRawMaterialData, async (req, res) => {
   try {
     const newRawMaterial = await rawMaterialService.createRawMaterial(req)
     res.json(newRawMaterial)
@@ -22,7 +23,16 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.put('/query', async (req, res) => {
+router.put('/update', async (req, res) => {
+  try {
+    const rawMaterial = await rawMaterialService.updateRawMaterial(req)
+    res.json(rawMaterial)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.put('/delete', async (req, res) => {
   try {
     const rawMaterial = await rawMaterialService.updateRawMaterialVisibility(
       req

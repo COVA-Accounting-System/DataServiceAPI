@@ -7,15 +7,51 @@ const schema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    amount: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    unit: {
-      type: String,
-      required: true,
-      trim: true
+    features: [
+      {
+        description: {
+          type: String,
+          required: false,
+          trim: true
+        }
+      }
+    ],
+    unitMeasure: {
+      _id: {
+        type: Number,
+        requeired: true,
+        trim: true
+      },
+      name: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      uiName: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      pluralName: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      spanishName: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      pluralSpanishName: {
+        type: String,
+        required: true,
+        trim: true
+      },
+      abbreviation: {
+        type: String,
+        required: true,
+        trim: true
+      }
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId

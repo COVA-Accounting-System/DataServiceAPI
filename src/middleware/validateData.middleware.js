@@ -4,9 +4,9 @@ export const validateClientData = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(50).required(),
     lastName: Joi.string().min(1).max(50).required(),
-    phoneNumber: Joi.string().allow(''),
-    phoneCountryCode: Joi.string().allow(''),
-    address: Joi.string().min(0).max(100).allow('')
+    phoneNumber: Joi.string().allow('').max(50),
+    phoneCountryCode: Joi.string().allow('').max(50),
+    address: Joi.string().min(0).max(200).allow('')
   })
 
   const { error } = schema.validate(req.body)
@@ -22,10 +22,10 @@ export const validateEmployeeData = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(50).required(),
     lastName: Joi.string().min(1).max(50).required(),
-    nationality: Joi.string().allow(''),
-    phoneNumber: Joi.string().allow(''),
-    phoneCountryCode: Joi.string().allow(''),
-    ci: Joi.number().required(),
+    nationality: Joi.string().allow('').max(50),
+    phoneNumber: Joi.string().allow('').max(50),
+    phoneCountryCode: Joi.string().allow('').max(50),
+    ci: Joi.number().required().max(50),
     startDate: Joi.date().allow(''),
     birthday: Joi.date().allow('')
   })
@@ -41,11 +41,11 @@ export const validateEmployeeData = (req, res, next) => {
 export const validateProviderData = (req, res, next) => {
   const schema = Joi.object({
     storeName: Joi.string().min(1).max(50).required(),
-    nit: Joi.number().allow(''),
+    nit: Joi.number().allow('').max(50),
     country: Joi.string().max(50).allow(''),
     city: Joi.string().max(50).allow(''),
-    phoneNumber: Joi.string().allow(''),
-    phoneCountryCode: Joi.string().allow(''),
+    phoneNumber: Joi.string().allow('').max(50),
+    phoneCountryCode: Joi.string().allow('').max(50),
     address: Joi.string().max(100).allow('')
   })
   const { error } = schema.validate(req.body)
@@ -58,12 +58,11 @@ export const validateProviderData = (req, res, next) => {
 }
 
 export const validateProductData = (req, res, next) => {
-  console.log(req.body)
   const schema = Joi.object({
     productName: Joi.string().max(50).required(),
     productType: Joi.string().max(50).required(),
-    productPrice: Joi.number().required(),
-    productDozenPrice: Joi.number().required(),
+    productPrice: Joi.number().max(50).required(),
+    productDozenPrice: Joi.number().max(50).required(),
     productFeatures: Joi.array().items(
       Joi.object({
         description: Joi.string()
@@ -82,8 +81,8 @@ export const validateProductData = (req, res, next) => {
 export const validateOrderData = (req, res, next) => {
   const schema = Joi.object({
     orderClient: Joi.object({
-      uiName: Joi.string(),
-      _id: Joi.string()
+      uiName: Joi.string().max(100),
+      _id: Joi.string().max(50)
     }).required(),
     orderProduct: Joi.object({
       _id: Joi.string().required(),
@@ -92,8 +91,8 @@ export const validateOrderData = (req, res, next) => {
       // productPrice: Joi.number().required(),
       // productDozenPrice: Joi.number().required()
     }).required(),
-    orderNumber: Joi.number().required(),
-    orderProductAmount: Joi.number().allow(''),
+    orderNumber: Joi.string().required().max(50),
+    orderProductAmount: Joi.number().allow('').max(50),
     orderProductAmountType: Joi.string().max(50).allow(''),
     orderPrice: Joi.number().required(),
     orderCreationDate: Joi.date().allow(''),
@@ -110,6 +109,33 @@ export const validateOrderData = (req, res, next) => {
   const { error } = schema.validate(req.body)
 
   if (error) {
+    return res.status(400).json({ message: error.details[0].message })
+  }
+  next()
+}
+
+export const validateRawMaterialData = (req, res, next) => {
+  const schema = Joi.object({
+    name: Joi.string().max(100).required(),
+    unitMeasure: Joi.object({
+      _id: Joi.string().max(10),
+      name: Joi.string().max(50),
+      uiName: Joi.string().max(50),
+      pluralName: Joi.string().max(50),
+      spanishName: Joi.string().max(50),
+      pluralSpanishName: Joi.string().max(50),
+      abbreviation: Joi.string().max(10)
+    }).required(),
+    features: Joi.array().items(
+      Joi.object({
+        description: Joi.string()
+      })
+    )
+  })
+  const { error } = schema.validate(req.body)
+
+  if (error) {
+    console.log(error.details[0].message)
     return res.status(400).json({ message: error.details[0].message })
   }
   next()

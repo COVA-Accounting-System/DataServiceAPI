@@ -42,7 +42,7 @@ const schema = new mongoose.Schema(
       // }
     },
     orderNumber: {
-      type: Number,
+      type: String,
       required: true,
       trim: true
     },

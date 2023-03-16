@@ -18,8 +18,16 @@ export default class rawMaterialService {
     return this.rawMaterialRepository.createRawMaterial(newRawMaterial)
   }
 
+  async updateRawMaterial (data) {
+    console.log('ser')
+    console.log(data.body)
+    const { _id, ...queryToUpdateWith } = data.body
+    const query = { _id }
+    return this.rawMaterialRepository.updateRawMaterial(query, queryToUpdateWith)
+  }
+
   async updateRawMaterialVisibility (data) {
-    const query = data.body
+    const query = { _id: data.body._id }
     const queryToUpdateWith = { isVisible: false }
     return this.rawMaterialRepository.updateRawMaterial(
       query,

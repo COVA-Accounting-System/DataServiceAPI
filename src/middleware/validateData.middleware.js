@@ -140,3 +140,21 @@ export const validateRawMaterialData = (req, res, next) => {
   }
   next()
 }
+
+export const validateIncomeData = (req, res, next) => {
+  const schema = Joi.object({
+    accountingSeat: Joi.string().required(),
+    client: Joi.string().required(),
+    order: Joi.string().required(),
+    date: Joi.string().required(),
+    amount: Joi.string().required(),
+    concept: Joi.string().required()
+  })
+  const { error } = schema.validate(req.body)
+
+  if (error) {
+    console.log(error.details[0].message)
+    return res.status(400).json({ message: error.details[0].message })
+  }
+  next()
+}

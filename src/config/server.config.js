@@ -6,6 +6,7 @@ import employee from '../routes/employee.route.js'
 import product from '../routes/product.route.js'
 import provider from '../routes/provider.route.js'
 import raw_material from '../routes/raw_material.route.js'
+import income from '../routes/income.route.js'
 import order from '../routes/order.route.js'
 import { verifyToken } from '../middleware/auth.middleware.js'
 import '../config/database.config.js'
@@ -24,9 +25,13 @@ app.get('/', (req, res) => {
 
 app.use('/api/contact/client', verifyToken, client)
 app.use('/api/contact/employee', verifyToken, employee)
-app.use('/api/product', verifyToken, product)
 app.use('/api/contact/provider', verifyToken, provider)
+
 app.use('/api/inventory/raw_material', verifyToken, raw_material)
+
+app.use('/api/accounting/income', verifyToken, income)
+
+app.use('/api/product', verifyToken, product)
 app.use('/api/order', verifyToken, order)
 
 export default app

@@ -9,7 +9,7 @@ const schema = new mongoose.Schema(
     },
     uiName: {
       type: String,
-      required: false,
+      required: true,
       trim: true
     },
     productFeatures: [

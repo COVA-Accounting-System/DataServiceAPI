@@ -20,8 +20,7 @@ export default class clientService {
   async createClient (data) {
     const newClient = new Client({
       ...data.body,
-      userId: data.userId,
-      uiName: `${data.body.name} ${data.body.lastName}`
+      userId: data.userId
     })
     return this.clientRepository.createClient(newClient)
   }

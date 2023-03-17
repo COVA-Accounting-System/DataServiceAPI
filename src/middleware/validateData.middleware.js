@@ -6,7 +6,8 @@ export const validateClientData = (req, res, next) => {
     lastName: Joi.string().min(1).max(50).required(),
     phoneNumber: Joi.string().allow('').max(50),
     phoneCountryCode: Joi.string().allow('').max(50),
-    address: Joi.string().min(0).max(200).allow('')
+    address: Joi.string().min(0).max(200).allow(''),
+    uiName: Joi.string().min(1).max(100).required()
   })
 
   const { error } = schema.validate(req.body)
@@ -25,7 +26,7 @@ export const validateEmployeeData = (req, res, next) => {
     nationality: Joi.string().allow('').max(50),
     phoneNumber: Joi.string().allow('').max(50),
     phoneCountryCode: Joi.string().allow('').max(50),
-    ci: Joi.number().required().max(50),
+    ci: Joi.number().required(),
     startDate: Joi.date().allow(''),
     birthday: Joi.date().allow('')
   })
@@ -41,7 +42,7 @@ export const validateEmployeeData = (req, res, next) => {
 export const validateProviderData = (req, res, next) => {
   const schema = Joi.object({
     storeName: Joi.string().min(1).max(50).required(),
-    nit: Joi.number().allow('').max(50),
+    nit: Joi.number().allow(''),
     country: Joi.string().max(50).allow(''),
     city: Joi.string().max(50).allow(''),
     phoneNumber: Joi.string().allow('').max(50),
@@ -61,8 +62,9 @@ export const validateProductData = (req, res, next) => {
   const schema = Joi.object({
     productName: Joi.string().max(50).required(),
     productType: Joi.string().max(50).required(),
-    productPrice: Joi.number().max(50).required(),
-    productDozenPrice: Joi.number().max(50).required(),
+    productPrice: Joi.number().required(),
+    productDozenPrice: Joi.number().required(),
+    uiName: Joi.string().min(1).max(100).required(),
     productFeatures: Joi.array().items(
       Joi.object({
         description: Joi.string()
@@ -80,25 +82,17 @@ export const validateProductData = (req, res, next) => {
 
 export const validateOrderData = (req, res, next) => {
   const schema = Joi.object({
-    orderClient: Joi.object({
-      uiName: Joi.string().max(100),
-      _id: Joi.string().max(50)
-    }).required(),
-    orderProduct: Joi.object({
-      _id: Joi.string().required(),
-      uiName: Joi.string().required(),
-      productType: Joi.string().required()
-      // productPrice: Joi.number().required(),
-      // productDozenPrice: Joi.number().required()
-    }).required(),
+    orderClient: Joi.string().required(),
+    orderProduct: Joi.string().required(),
     orderNumber: Joi.string().required().max(50),
-    orderProductAmount: Joi.number().allow('').max(50),
+    orderProductAmount: Joi.number().allow(''),
     orderProductAmountType: Joi.string().max(50).allow(''),
     orderPrice: Joi.number().required(),
     orderCreationDate: Joi.date().allow(''),
     orderDeliveryDate: Joi.date().allow(''),
     orderState: Joi.string().max(50).allow(''),
     orderStateNumber: Joi.number().allow(''),
+    uiName: Joi.string().min(1).max(100).required(),
     orderFeatures: Joi.array().items(
       Joi.object({
         description: Joi.string()

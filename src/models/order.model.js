@@ -3,43 +3,12 @@ import mongoose from 'mongoose'
 const schema = new mongoose.Schema(
   {
     orderClient: {
-      uiName: {
-        type: String,
-        required: true,
-        trim: true
-      },
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        trim: true
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Client'
     },
     orderProduct: {
-      _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        trim: true
-      },
-      uiName: {
-        type: String,
-        required: true,
-        trim: true
-      },
-      productType: {
-        type: String,
-        required: true,
-        trim: true
-      }
-      // productPrice: {
-      //   type: Number,
-      //   required: true,
-      //   trim: true
-      // },
-      // productDozenPrice: {
-      //   type: Number,
-      //   required: true,
-      //   trim: true
-      // }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
     },
     orderNumber: {
       type: String,
@@ -80,6 +49,11 @@ const schema = new mongoose.Schema(
     orderStateNumber: {
       type: Number,
       required: false,
+      trim: true
+    },
+    uiName: {
+      type: String,
+      required: true,
       trim: true
     },
     orderFeatures: [

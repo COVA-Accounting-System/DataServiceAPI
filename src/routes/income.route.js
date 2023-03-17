@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', validateIncomeData, async (req, res) => {
   try {
-    const newIncome = await incomeService.createIncomes(req)
+    const newIncome = await incomeService.createIncome(req)
     res.json(newIncome)
   } catch (err) {
     console.error(err)

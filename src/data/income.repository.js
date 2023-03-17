@@ -4,15 +4,31 @@ export default class incomeRepository {
   }
 
   async getIncome (query) {
-    return this.Income.findOne(query)
+    return this.Income.findOne(query).populate([
+      { path: 'client' },
+      {
+        path: 'order',
+        populate: [{ path: 'orderProduct' }, { path: 'orderClient' }]
+      }
+    ])
   }
 
   async getIncomes (query) {
-    return this.Income.find(query)
+    return this.Income.find(query).populate([
+      { path: 'client' },
+      {
+        path: 'order',
+        populate: [{ path: 'orderProduct' }, { path: 'orderClient' }]
+      }
+    ])
+
+    // return this.Income.find(query).populate('client').populate('order')
   }
 
-  async createIncomes (newIncome) {
-    return newIncome.save()
+  async createIncome (newIncome) {
+    const income = await newIncome.save()
+    console.log(income._id)
+    return this.getIncome({ _id: income._id })
   }
 
   async updateIncome (query, queryToUpdateWith) {

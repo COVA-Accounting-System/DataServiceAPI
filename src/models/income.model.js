@@ -9,13 +9,11 @@ const schema = new mongoose.Schema(
     },
     client: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      trim: true
+      ref: 'Client'
     },
     order: {
       type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      trim: true
+      ref: 'Order'
     },
     date: {
       type: String,

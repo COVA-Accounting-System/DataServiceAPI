@@ -12,7 +12,7 @@ export default class incomeService {
       ...data.body,
       userId: data.userId
     })
-    return this.incomeRepository.createIncomes(newIncome)
+    return this.incomeRepository.createIncome(newIncome)
   }
 
   async getIncomes (data) {

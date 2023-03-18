@@ -8,6 +8,7 @@ import provider from '../routes/provider.route.js'
 import raw_material from '../routes/raw_material.route.js'
 import income from '../routes/income.route.js'
 import order from '../routes/order.route.js'
+import expense from '../routes/expense.route.js'
 import { verifyToken } from '../middleware/auth.middleware.js'
 import '../config/database.config.js'
 
@@ -30,6 +31,7 @@ app.use('/api/contact/provider', verifyToken, provider)
 app.use('/api/inventory/raw_material', verifyToken, raw_material)
 
 app.use('/api/accounting/income', verifyToken, income)
+app.use('/api/accounting/expense', verifyToken, expense)
 
 app.use('/api/product', verifyToken, product)
 app.use('/api/order', verifyToken, order)

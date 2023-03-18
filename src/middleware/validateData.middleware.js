@@ -152,3 +152,22 @@ export const validateIncomeData = (req, res, next) => {
   }
   next()
 }
+
+export const validateExpenseData = (req, res, next) => {
+  const schema = Joi.object({
+    accountingSeat: Joi.string().required(),
+    category: Joi.string().required(),
+    creditorEmployee: Joi.string().allow(''),
+    creditorProvider: Joi.string().allow(''),
+    date: Joi.date().allow(''),
+    amount: Joi.number().required(),
+    concept: Joi.string().required()
+  })
+  const { error } = schema.validate(req.body)
+
+  if (error) {
+    console.log(error.details[0].message)
+    return res.status(400).json({ message: error.details[0].message })
+  }
+  next()
+}

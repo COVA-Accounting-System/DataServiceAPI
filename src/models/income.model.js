@@ -17,7 +17,7 @@ const schema = new mongoose.Schema(
     },
     date: {
       type: String,
-      required: false,
+      required: true,
       trim: true
     },
     amount: {

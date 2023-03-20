@@ -9,6 +9,7 @@ import raw_material from '../routes/raw_material.route.js'
 import income from '../routes/income.route.js'
 import order from '../routes/order.route.js'
 import expense from '../routes/expense.route.js'
+import inventoryInput from '../routes/inventoryInput.route.js'
 import { verifyToken } from '../middleware/auth.middleware.js'
 import '../config/database.config.js'
 
@@ -24,15 +25,20 @@ app.get('/', (req, res) => {
   res.json({ message: 'welcome to inventory-api' })
 })
 
+// CONTACTS
 app.use('/api/contact/client', verifyToken, client)
 app.use('/api/contact/employee', verifyToken, employee)
 app.use('/api/contact/provider', verifyToken, provider)
 
+// INVENTORY
 app.use('/api/inventory/raw_material', verifyToken, raw_material)
+app.use('/api/inventory/inventory_input', verifyToken, inventoryInput)
 
+// ACCOUNTING
 app.use('/api/accounting/income', verifyToken, income)
 app.use('/api/accounting/expense', verifyToken, expense)
 
+// PRODCUTION
 app.use('/api/product', verifyToken, product)
 app.use('/api/order', verifyToken, order)
 

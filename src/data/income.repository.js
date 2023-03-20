@@ -21,8 +21,6 @@ export default class incomeRepository {
         populate: [{ path: 'orderProduct' }, { path: 'orderClient' }]
       }
     ])
-
-    // return this.Income.find(query).populate('client').populate('order')
   }
 
   async createIncome (newIncome) {

@@ -42,6 +42,7 @@ export const validateEmployeeData = (req, res, next) => {
 export const validateProviderData = (req, res, next) => {
   const schema = Joi.object({
     storeName: Joi.string().min(1).max(50).required(),
+    uiName: Joi.string().min(1).max(100).required(),
     nit: Joi.number().allow(''),
     country: Joi.string().max(50).allow(''),
     city: Joi.string().max(50).allow(''),
@@ -162,6 +163,30 @@ export const validateExpenseData = (req, res, next) => {
     date: Joi.date().allow(''),
     amount: Joi.number().required(),
     concept: Joi.string().required()
+  })
+  const { error } = schema.validate(req.body)
+
+  if (error) {
+    console.log(error.details[0].message)
+    return res.status(400).json({ message: error.details[0].message })
+  }
+  next()
+}
+
+export const validateInventoryInputData = (req, res, next) => {
+  const schema = Joi.object({
+    numberOfInput: Joi.string().required(),
+    provider: Joi.string().required(),
+    date: Joi.date().required(),
+    listOfMaterials: Joi.array().items(
+      Joi.object({
+        rawMaterial: Joi.string().required(),
+        amount: Joi.number().required(),
+        unitMeasure: Joi.string().required(),
+        price: Joi.number().required()
+      })
+    ),
+    totalPrice: Joi.number().required()
   })
   const { error } = schema.validate(req.body)
 

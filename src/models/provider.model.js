@@ -7,6 +7,11 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    uiName: {
+      type: String,
+      required: true,
+      trim: true
+    },
     nit: {
       type: String,
       required: false,

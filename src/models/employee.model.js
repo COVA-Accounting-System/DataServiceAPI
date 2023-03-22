@@ -12,6 +12,11 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    uiName: {
+      type: String,
+      required: true,
+      trim: true
+    },
     phoneNumber: {
       type: String,
       required: false,

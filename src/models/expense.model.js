@@ -14,18 +14,22 @@ const schema = new mongoose.Schema(
     },
     concept: {
       type: String,
-      required: false,
+      required: true,
       trim: true
     },
     date: {
       type: String,
-      required: false,
+      required: true,
       trim: true
     },
     amount: {
       type: Number,
       required: true,
       trim: true
+    },
+    inventoryInput: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'InventoryInput'
     },
     creditorEmployee: {
       type: mongoose.Schema.Types.ObjectId,
@@ -34,6 +38,11 @@ const schema = new mongoose.Schema(
     creditorProvider: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Provider'
+    },
+    creditorEntity: {
+      type: String,
+      required: false,
+      trim: true
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId

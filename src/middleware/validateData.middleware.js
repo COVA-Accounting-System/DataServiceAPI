@@ -22,6 +22,7 @@ export const validateClientData = (req, res, next) => {
 export const validateEmployeeData = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(1).max(50).required(),
+    uiName: Joi.string().min(1).max(100).required(),
     lastName: Joi.string().min(1).max(50).required(),
     nationality: Joi.string().allow('').max(50),
     phoneNumber: Joi.string().allow('').max(50),
@@ -112,6 +113,7 @@ export const validateOrderData = (req, res, next) => {
 export const validateRawMaterialData = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().max(100).required(),
+    uiName: Joi.string().min(1).max(100).required(),
     unitMeasure: Joi.object({
       _id: Joi.string().max(10),
       name: Joi.string().max(50),
@@ -158,9 +160,11 @@ export const validateExpenseData = (req, res, next) => {
   const schema = Joi.object({
     accountingSeat: Joi.string().required(),
     category: Joi.string().required(),
+    inventoryInput: Joi.string().allow(''),
     creditorEmployee: Joi.string().allow(''),
     creditorProvider: Joi.string().allow(''),
-    date: Joi.date().allow(''),
+    creditorEntity: Joi.string().allow(''),
+    date: Joi.date().required(),
     amount: Joi.number().required(),
     concept: Joi.string().required()
   })

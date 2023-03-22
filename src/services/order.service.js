@@ -1,39 +1,69 @@
-import { Order } from "../models/order.model.js";
-import _orderRepository from "../data/order.repository.js";
+import { Order } from '../models/order.model.js'
+import _orderRepository from '../data/order.repository.js'
+
+import {
+  productionStage,
+  maxProductionStage,
+  minProductionStage
+} from '../enums/productionStage.js'
 
 export default class orderService {
-  constructor() {
-    this.orderRepository = new _orderRepository(Order);
-  }
-  async createOrder(data) {
-    const newOrder = new Order();
-    if (data.body.client) {
-      newOrder.setClient(data.body.client);
-    }
-    if (data.body.stateCounter) {
-      newOrder.setState(data.body.stateCounter);
-    }
-    return this.orderRepository.createOrders(newOrder);
+  constructor () {
+    this.orderRepository = new _orderRepository(Order)
   }
 
-  async getOrders(data) {
+  async createOrder (data) {
+    const newOrder = new Order({
+      ...data.body,
+      userId: data.userId,
+      orderState: 'On hold',
+      orderStateNumber: 0
+    })
+    return this.orderRepository.createOrders(newOrder)
+  }
+
+  async getOrders (data) {
     const query = { userId: data.userId, isVisible: true }
-    return this.orderRepository.getOrders(query);
+    return this.orderRepository.getOrders(query)
   }
 
-  async getOrder(query) {
-    return this.orderRepository.getOrder(query);
+  async getOrder (query) {
+    return this.orderRepository.getOrder(query)
   }
 
-  async changeStateBackward(data) {
-    const orderToChange = await this.orderRepository.getOrder(data.body);
-    orderToChange.moveBackward();
-    return this.orderRepository.updateOrder(data.body, orderToChange);
+  async updateOrderVisibility (data) {
+    const query = { _id: data.body._id }
+    const queryToUpdateWith = { isVisible: false }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
   }
 
-  async changeStateFordward(data) {
-    const orderToChange = await this.orderRepository.getOrder(data.body);
-    orderToChange.moveForward();
-    return this.orderRepository.updateOrder(data.body, orderToChange);
+  async updateOrder (data) {
+    const { _id, ...queryToUpdateWith } = data.body
+    const query = { _id }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
+  }
+
+  async changeStateBackward (data) {
+    if (data.body.orderStateNumber !== minProductionStage) {
+      const query = { _id: data.body._id }
+      const queryToUpdateWith = {
+        orderState: productionStage[data.body.orderStateNumber - 1].state,
+        orderStateNumber: data.body.orderStateNumber - 1
+      }
+      return this.orderRepository.updateOrder(query, queryToUpdateWith)
+    }
+    return null
+  }
+
+  async changeStateFordward (data) {
+    if (data.body.orderStateNumber !== maxProductionStage) {
+      const query = { _id: data.body._id }
+      const queryToUpdateWith = {
+        orderState: productionStage[data.body.orderStateNumber + 1].state,
+        orderStateNumber: data.body.orderStateNumber + 1
+      }
+      return this.orderRepository.updateOrder(query, queryToUpdateWith)
+    }
+    return null
   }
 }

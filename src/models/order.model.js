@@ -1,70 +1,90 @@
-import mongoose from "mongoose";
-import { Client } from "../models/client.model.js";
-import { production_stage } from "../enums/production_stage.js";
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
-    orderName: {
+    orderClient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Client'
+    },
+    orderProduct: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    },
+    inventoryOutput: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'InventoryOutput'
+    },
+    orderNumber: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
-    creationDate: {
+    orderProductAmount: {
+      type: Number,
+      required: false,
+      trim: true
+    },
+    orderProductAmountType: {
       type: String,
       required: true,
-      default: new Date(Date.now()).toLocaleDateString(),
-      trim: true,
+      trim: true
     },
-    client: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-    },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-    },
-    state: {
-      type: String,
-      required: false,
-    },
-    stateCounter: {
+    orderPrice: {
       type: Number,
       trim: true,
       required: true,
-      default: 0,
+      default: 0
     },
+    orderCreationDate: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    orderDeliveryDate: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    orderState: {
+      type: String,
+      required: false,
+      trim: true
+    },
+    orderStateNumber: {
+      type: Number,
+      required: false,
+      trim: true
+    },
+    uiName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    orderFeatures: [
+      {
+        description: {
+          type: String,
+          required: false,
+          trim: true
+        }
+      }
+    ],
     userId: {
       type: mongoose.Schema.Types.ObjectId
     },
+    isVisible: {
+      type: Boolean,
+      required: true,
+      default: true
+    }
   },
   {
     versionKey: false,
-    timestamps: true,
+    timestamps: true
   }
-);
+)
 
-class order {
-  setClient(Client) {
-    this.client = Client;
-  }
-  setState(StateCounter) {
-    this.stateCounter = StateCounter;
-    this.state = production_stage[this.stateCounter];
-  }
+class order {}
 
-  moveForward() {
-    if (this.state != production_stage[production_stage.length - 1]) {
-      this.stateCounter++;
-      this.state = production_stage[this.stateCounter];
-    }
-  }
-  moveBackward() {
-    if (this.state != production_stage[0]) {
-      this.stateCounter--;
-      this.state = production_stage[this.stateCounter];
-    }
-  }
-}
-
-schema.loadClass(order);
-export const Order = mongoose.model("Order", schema);
+schema.loadClass(order)
+export const Order = mongoose.model('Order', schema)

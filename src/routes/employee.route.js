@@ -1,52 +1,53 @@
-import { Router } from "express";
-import _employeeService from "../services/employee.service.js";
+import { Router } from 'express'
+import _employeeService from '../services/employee.service.js'
+import { validateEmployeeData } from '../middleware/validateData.middleware.js'
 
-const employeeService = new _employeeService();
-const router = Router();
+const employeeService = new _employeeService()
+const router = Router()
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const employees = await employeeService.getEmployees();
-    res.json(employees);
+    const employees = await employeeService.getEmployees(req)
+    res.json(employees)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.post("/", async (req, res) => {
+router.post('/', validateEmployeeData, async (req, res) => {
   try {
-    const newEmployee = await employeeService.createEmployee(req);
-    res.json(newEmployee);
+    const newEmployee = await employeeService.createEmployee(req)
+    res.json(newEmployee)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.put("/delete", async (req, res) => {
+router.put('/delete', async (req, res) => {
   try {
-    const employee = await employeeService.updateEmployeeVisibility(req);
-    res.json(employee);
+    const employee = await employeeService.updateEmployeeVisibility(req)
+    res.json(employee)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.put("/update", async (req, res) => {
+router.put('/update', async (req, res) => {
   try {
-    const employee = await employeeService.updateEmployee(req);
-    res.json(employee);
+    const employee = await employeeService.updateEmployee(req)
+    res.json(employee)
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-router.delete("/delete", async (req, res) => {
+router.delete('/delete', async (req, res) => {
   try {
-    await employeeService.deleteEmployee(req);
-    res.send("This employee was deleted");
+    await employeeService.deleteEmployee(req)
+    res.send('This employee was deleted')
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-});
+})
 
-export default router;
+export default router

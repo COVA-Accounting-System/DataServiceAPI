@@ -2,34 +2,32 @@ import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
-    name: {
+    accountingSeat: {
       type: String,
       required: true,
       trim: true
     },
-    lastName: {
-      type: String,
-      required: false,
-      trim: true
+    client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Client'
     },
-    uiName: {
+    order: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order'
+    },
+    date: {
       type: String,
       required: true,
       trim: true
     },
-    phoneNumber: {
-      type: String,
-      required: false,
+    amount: {
+      type: Number,
+      required: true,
       trim: true
     },
-    phoneCountryCode: {
+    concept: {
       type: String,
-      required: false,
-      trim: true
-    },
-    address: {
-      type: String,
-      required: false,
+      required: true,
       trim: true
     },
     userId: {
@@ -47,7 +45,7 @@ const schema = new mongoose.Schema(
   }
 )
 
-class client {}
+class income {}
 
-schema.loadClass(client)
-export const Client = mongoose.model('Client', schema)
+schema.loadClass(income)
+export const Income = mongoose.model('Income', schema)

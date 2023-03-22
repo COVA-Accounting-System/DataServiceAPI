@@ -1,36 +1,46 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
     storeName: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
-    city: {
+    uiName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    nit: {
       type: String,
       required: false,
-      trim: true,
+      trim: true
     },
     country: {
       type: String,
       required: false,
-      trim: true,
+      trim: true
     },
-    phone: {
-      type: Number,
+    city: {
+      type: String,
       required: false,
-      trim: true,
+      trim: true
     },
-    nit: {
-      type: Number,
+    phoneCountryCode: {
+      type: String,
       required: false,
-      trim: true,
+      trim: true
+    },
+    phoneNumber: {
+      type: String,
+      required: false,
+      trim: true
     },
     address: {
       type: String,
       required: false,
-      trim: true,
+      trim: true
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId
@@ -38,16 +48,16 @@ const schema = new mongoose.Schema(
     isVisible: {
       type: Boolean,
       required: true,
-      default: true,
-    },
+      default: true
+    }
   },
   {
     versionKey: false,
-    timestamps: true,
+    timestamps: true
   }
-);
+)
 
 class provider {}
 
-schema.loadClass(provider);
-export const Provider = mongoose.model("Provider", schema);
+schema.loadClass(provider)
+export const Provider = mongoose.model('Provider', schema)

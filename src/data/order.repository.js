@@ -7,18 +7,21 @@ export default class orderRepository {
     return this.Order.findOne(query)
       .populate('orderClient')
       .populate('orderProduct')
+      .populate('inventoryOutput')
   }
 
   async getOrderById (id) {
     return this.Order.findById(id)
       .populate('orderClient')
       .populate('orderProduct')
+      .populate('inventoryOutput')
   }
 
   async getOrders (query) {
     return this.Order.find(query)
       .populate('orderClient')
       .populate('orderProduct')
+      .populate('inventoryOutput')
   }
 
   async createOrders (newOrder) {

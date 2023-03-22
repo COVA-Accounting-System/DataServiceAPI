@@ -10,6 +10,7 @@ import income from '../routes/income.route.js'
 import order from '../routes/order.route.js'
 import expense from '../routes/expense.route.js'
 import inventoryInput from '../routes/inventoryInput.route.js'
+import inventoryOutput from '../routes/inventoryOutput.route.js'
 import { verifyToken } from '../middleware/auth.middleware.js'
 import '../config/database.config.js'
 
@@ -33,6 +34,7 @@ app.use('/api/contact/provider', verifyToken, provider)
 // INVENTORY
 app.use('/api/inventory/raw_material', verifyToken, raw_material)
 app.use('/api/inventory/inventory_input', verifyToken, inventoryInput)
+app.use('/api/inventory/inventory_output', verifyToken, inventoryOutput)
 
 // ACCOUNTING
 app.use('/api/accounting/income', verifyToken, income)

@@ -85,6 +85,7 @@ export const validateProductData = (req, res, next) => {
 export const validateOrderData = (req, res, next) => {
   const schema = Joi.object({
     orderClient: Joi.string().required(),
+    inventoryOutput: Joi.string().allow(''),
     orderProduct: Joi.string().required(),
     orderNumber: Joi.string().required().max(50),
     orderProductAmount: Joi.number().allow(''),
@@ -191,6 +192,31 @@ export const validateInventoryInputData = (req, res, next) => {
       })
     ),
     totalPrice: Joi.number().required()
+  })
+  const { error } = schema.validate(req.body)
+
+  if (error) {
+    console.log(error.details[0].message)
+    return res.status(400).json({ message: error.details[0].message })
+  }
+  next()
+}
+
+export const validateInventoryOutputData = (req, res, next) => {
+  const schema = Joi.object({
+    numberOfInput: Joi.string().required(),
+    // employee: Joi.string().required(),
+    order: Joi.string().required(),
+    date: Joi.date().required(),
+    listOfMaterials: Joi.array().items(
+      Joi.object({
+        rawMaterial: Joi.string().required(),
+        amount: Joi.number().required(),
+        unitMeasure: Joi.string().required(),
+        price: Joi.number().required()
+      })
+    ),
+    estimatedPrice: Joi.number().required()
   })
   const { error } = schema.validate(req.body)
 

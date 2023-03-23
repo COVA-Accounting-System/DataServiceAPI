@@ -25,7 +25,6 @@ export default class incomeRepository {
 
   async createIncome (newIncome) {
     const income = await newIncome.save()
-    console.log(income._id)
     return this.getIncome({ _id: income._id })
   }
 

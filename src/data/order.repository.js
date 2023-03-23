@@ -7,21 +7,32 @@ export default class orderRepository {
     return this.Order.findOne(query)
       .populate('orderClient')
       .populate('orderProduct')
-      .populate('inventoryOutput')
+      .populate('listOfIncomes')
+      .populate('listOfInventoryOutputs')
   }
 
   async getOrderById (id) {
     return this.Order.findById(id)
       .populate('orderClient')
       .populate('orderProduct')
-      .populate('inventoryOutput')
+      .populate('listOfIncomes')
+      .populate('listOfInventoryOutputs')
   }
 
   async getOrders (query) {
     return this.Order.find(query)
       .populate('orderClient')
       .populate('orderProduct')
-      .populate('inventoryOutput')
+      .populate('listOfIncomes')
+      .populate('listOfInventoryOutputs')
+  }
+
+  async updateOrderListOfIncomes (id, income) {
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $push: { listOfIncomes: { income: income._id } }
+    }
+    return this.updateOrder(query, queryToUpdateWith)
   }
 
   async createOrders (newOrder) {

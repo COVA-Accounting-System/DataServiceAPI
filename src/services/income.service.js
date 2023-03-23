@@ -1,10 +1,12 @@
-
 import { Income } from '../models/income.model.js'
 import _incomeRepository from '../data/income.repository.js'
+import { Order } from '../models/order.model.js'
+import _orderRepository from '../data/order.repository.js'
 
 export default class incomeService {
   constructor () {
     this.incomeRepository = new _incomeRepository(Income)
+    this.orderRepository = new _orderRepository(Order)
   }
 
   async createIncome (data) {
@@ -13,6 +15,16 @@ export default class incomeService {
       userId: data.userId
     })
     return this.incomeRepository.createIncome(newIncome)
+  }
+
+  async createIncomeAndRegisterInOrder (data) {
+    const newIncome = new Income({
+      ...data.body,
+      userId: data.userId
+    })
+    const income = await this.incomeRepository.createIncome(newIncome)
+    await this.orderRepository.updateOrderListOfIncomes(data.body.order, income)
+    return income
   }
 
   async getIncomes (data) {

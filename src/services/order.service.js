@@ -15,9 +15,7 @@ export default class orderService {
   async createOrder (data) {
     const newOrder = new Order({
       ...data.body,
-      userId: data.userId,
-      orderState: 'On hold',
-      orderStateNumber: 0
+      userId: data.userId
     })
     return this.orderRepository.createOrders(newOrder)
   }
@@ -65,5 +63,32 @@ export default class orderService {
       return this.orderRepository.updateOrder(query, queryToUpdateWith)
     }
     return null
+  }
+
+  async changeStateToNotPaid (data) {
+    const query = { _id: data.body._id }
+    const queryToUpdateWith = {
+      orderPaidState: 'Not paid',
+      orderPaidStateNumber: 0
+    }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
+  }
+
+  async changeStateToPartialPayment (data) {
+    const query = { _id: data.body._id }
+    const queryToUpdateWith = {
+      orderPaidState: 'Partial payment',
+      orderPaidStateNumber: 1
+    }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
+  }
+
+  async changeStatePaid (data) {
+    const query = { _id: data.body._id }
+    const queryToUpdateWith = {
+      orderPaidState: 'Paid',
+      orderPaidStateNumber: 2
+    }
+    return this.orderRepository.updateOrder(query, queryToUpdateWith)
   }
 }

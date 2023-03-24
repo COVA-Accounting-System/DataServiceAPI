@@ -23,7 +23,13 @@ export default class incomeService {
       userId: data.userId
     })
     const income = await this.incomeRepository.createIncome(newIncome)
-    await this.orderRepository.updateOrderListOfIncomes(data.body.order, income)
+    await this.orderRepository.addToListOfIncomes(data.body.order, income)
+    return income
+  }
+
+  async deleteAndRemoveFromOrder (data) {
+    const income = await this.incomeRepository.deleteIncome({ _id: data.body._id })
+    await this.orderRepository.removeFromListOfIncomes(data.body.order, income)
     return income
   }
 

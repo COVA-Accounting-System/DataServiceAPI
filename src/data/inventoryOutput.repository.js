@@ -17,12 +17,15 @@ export default class inventoryOutputRepository {
 
   async createInventoryOutput (newInventoryOutput) {
     const inventoryOutput = await newInventoryOutput.save()
-    console.log(inventoryOutput._id)
     return this.getInventoryOutput({ _id: inventoryOutput._id })
   }
 
   async updateInventoryOutput (query, queryToUpdateWith) {
     await this.InventoryOutput.findOneAndUpdate(query, queryToUpdateWith)
     return this.getInventoryOutput(query)
+  }
+
+  async deleteInventoryOutput (query) {
+    return this.InventoryOutput.findOneAndDelete(query)
   }
 }

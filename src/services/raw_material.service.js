@@ -19,8 +19,6 @@ export default class rawMaterialService {
   }
 
   async updateRawMaterial (data) {
-    console.log('ser')
-    console.log(data.body)
     const { _id, ...queryToUpdateWith } = data.body
     const query = { _id }
     return this.rawMaterialRepository.updateRawMaterial(query, queryToUpdateWith)

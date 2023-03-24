@@ -32,4 +32,8 @@ export default class incomeRepository {
     await this.Income.findOneAndUpdate(query, queryToUpdateWith)
     return this.getIncome(query)
   }
+
+  async deleteIncome (query) {
+    return this.Income.findOneAndDelete(query)
+  }
 }

@@ -28,7 +28,9 @@ export default class incomeService {
   }
 
   async deleteAndRemoveFromOrder (data) {
-    const income = await this.incomeRepository.deleteIncome({ _id: data.body._id })
+    const income = await this.incomeRepository.deleteIncome({
+      _id: data.body._id
+    })
     await this.orderRepository.removeFromListOfIncomes(data.body.order, income)
     return income
   }
@@ -46,6 +48,23 @@ export default class incomeService {
     const query = { _id: data.body._id }
     const queryToUpdateWith = { isVisible: false }
     return this.incomeRepository.updateIncome(query, queryToUpdateWith)
+  }
+
+  async updateIncomeAndUpdateOrder (data) {
+    const query = { _id: data.body._id }
+    const queryToUpdateWith = { ...data.body }
+    const oldIncome = await this.getIncome(query)
+
+    await this.orderRepository.updateItemFromListOfIncomes(
+      data.body.order,
+      oldIncome,
+      data.body.amount
+    )
+    const newIncome = await this.incomeRepository.updateIncome(
+      query,
+      queryToUpdateWith
+    )
+    return newIncome
   }
 
   async updateIncome (data) {

@@ -54,6 +54,15 @@ router.put('/deleteAndRemoveFromOrder', async (req, res) => {
   }
 })
 
+router.put('/updateAndUpdateOrder', async (req, res) => {
+  try {
+    const income = await incomeService.updateIncomeAndUpdateOrder(req)
+    res.json(income)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.put('/update', async (req, res) => {
   try {
     const income = await incomeService.updateIncome(req)

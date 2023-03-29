@@ -46,19 +46,36 @@ export default class orderRepository {
   }
 
   async addToListOfInventoryOutput (id, inventoryOutput) {
-    console.log(inventoryOutput)
     const query = { _id: id }
     const queryToUpdateWith = {
-      $push: { listOfInventoryOutputs: { inventoryOutput: inventoryOutput._id } },
+      $push: {
+        listOfInventoryOutputs: { inventoryOutput: inventoryOutput._id }
+      },
       $inc: { orderMaterialCosts: inventoryOutput.estimatedPrice }
     }
+    return this.updateOrder(query, queryToUpdateWith)
+  }
+
+  async updateItemFromListOfIncomes (id, oldIncome, newAmount) {
+    console.log(oldIncome.amount)
+    console.log(newAmount)
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $inc: {
+        orderBalance: -(newAmount - oldIncome.amount),
+        orderPayedPrice: newAmount - oldIncome.amount
+      }
+    }
+    // const queryToUpdateWith = income
     return this.updateOrder(query, queryToUpdateWith)
   }
 
   async removeFromListOfInventoryOutput (id, inventoryOutput) {
     const query = { _id: id }
     const queryToUpdateWith = {
-      $pull: { listOfInventoryOutputs: { inventoryOutput: inventoryOutput._id } },
+      $pull: {
+        listOfInventoryOutputs: { inventoryOutput: inventoryOutput._id }
+      },
       $inc: { orderMaterialCosts: -inventoryOutput.estimatedPrice }
     }
     return this.updateOrder(query, queryToUpdateWith)

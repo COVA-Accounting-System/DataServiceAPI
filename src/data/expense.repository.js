@@ -6,14 +6,16 @@ export default class employeeRepository {
   async getExpenses (query) {
     return this.Expense.find(query).populate([
       { path: 'creditorEmployee' },
-      { path: 'creditorProvider' }
+      { path: 'creditorProvider' },
+      { path: 'inventoryInput' }
     ])
   }
 
   async getExpense (query) {
     return this.Expense.findOne(query).populate([
       { path: 'creditorEmployee' },
-      { path: 'creditorProvider' }
+      { path: 'creditorProvider' },
+      { path: 'inventoryInput' }
     ])
   }
 

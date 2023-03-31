@@ -14,6 +14,15 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.post('/createExpenseOfInventoryInput', async (req, res) => {
+  try {
+    const newExpense = await expenseService.createExpenseOfInventoryInput(req)
+    res.json(newExpense)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.post('/', validateExpenseData, async (req, res) => {
   try {
     const newExpense = await expenseService.createExpense(req)

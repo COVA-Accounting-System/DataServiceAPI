@@ -57,8 +57,6 @@ export default class orderRepository {
   }
 
   async updateItemFromListOfIncomes (id, oldIncome, newAmount) {
-    console.log(oldIncome.amount)
-    console.log(newAmount)
     const query = { _id: id }
     const queryToUpdateWith = {
       $inc: {

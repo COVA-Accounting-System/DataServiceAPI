@@ -200,6 +200,7 @@ export const validateInventoryInputData = (req, res, next) => {
     listOfMaterials: Joi.array().items(
       Joi.object({
         rawMaterial: Joi.string().required(),
+        name: Joi.string().required(),
         amount: Joi.number().required(),
         unitMeasure: Joi.string().required(),
         price: Joi.number().required()

@@ -22,6 +22,11 @@ const schema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'RawMaterial'
         },
+        name: {
+          type: String,
+          required: true,
+          trim: true
+        },
         amount: {
           type: Number,
           required: true,

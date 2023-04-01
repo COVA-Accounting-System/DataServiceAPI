@@ -30,7 +30,6 @@ export default class employeeRepository {
   }
 
   async deleteExpense (query) {
-    await this.Expense.findOneAndDelete(query)
-    return 'This expense was deleted'
+    return this.Expense.findOneAndDelete(query)
   }
 }

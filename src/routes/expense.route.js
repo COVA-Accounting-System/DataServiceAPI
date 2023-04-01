@@ -34,7 +34,16 @@ router.post('/', validateExpenseData, async (req, res) => {
 
 router.put('/delete', async (req, res) => {
   try {
-    const expense = await expenseService.updateExpenseVisibility(req)
+    const expense = await expenseService.deleteExpense(req)
+    res.json(expense)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.put('/deleteExpenseAndInventoryInput', async (req, res) => {
+  try {
+    const expense = await expenseService.deleteExpenseAndInventoryInput(req)
     res.json(expense)
   } catch (err) {
     console.error(err)
@@ -44,6 +53,15 @@ router.put('/delete', async (req, res) => {
 router.put('/update', async (req, res) => {
   try {
     const expense = await expenseService.updateExpense(req)
+    res.json(expense)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.put('/updateExpenseAndInventoryInput', async (req, res) => {
+  try {
+    const expense = await expenseService.updateExpenseAndInventoryInput(req)
     res.json(expense)
   } catch (err) {
     console.error(err)

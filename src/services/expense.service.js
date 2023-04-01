@@ -58,8 +58,40 @@ export default class expenseService {
     return this.expenseRepository.updateExpense(query, queryToUpdateWith)
   }
 
+  async updateExpenseAndInventoryInput (data) {
+    const inventoryData = data.body.inventoryData
+    const expenseData = data.body.expenseData
+    const inventoryInput =
+      await this.inventoryInputRepository.updateInventoryInput(
+        { _id: inventoryData._id },
+        inventoryData
+      )
+    const expense = await this.expenseRepository.updateExpense(
+      { _id: expenseData._id },
+      expenseData
+    )
+    return {
+      expense,
+      inventoryInput
+    }
+  }
+
+  async deleteExpenseAndInventoryInput (data) {
+    const expense = await this.expenseRepository.deleteExpense({
+      _id: data.body.expenseData._id
+    })
+    const inventoryInput =
+      await this.inventoryInputRepository.deleteInventoryInput({
+        _id: data.body.inventoryData._id
+      })
+    return {
+      expense,
+      inventoryInput
+    }
+  }
+
   async deleteExpense (data) {
-    const query = data.body
+    const query = { _id: data.body._id }
     return this.expenseRepository.deleteExpense(query)
   }
 }

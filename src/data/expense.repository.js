@@ -7,7 +7,10 @@ export default class employeeRepository {
     return this.Expense.find(query).populate([
       { path: 'creditorEmployee' },
       { path: 'creditorProvider' },
-      { path: 'inventoryInput' }
+      {
+        path: 'inventoryInput',
+        populate: [{ path: 'listOfMaterials.rawMaterial' }]
+      }
     ])
   }
 
@@ -15,7 +18,10 @@ export default class employeeRepository {
     return this.Expense.findOne(query).populate([
       { path: 'creditorEmployee' },
       { path: 'creditorProvider' },
-      { path: 'inventoryInput' }
+      {
+        path: 'inventoryInput',
+        populate: [{ path: 'listOfMaterials.rawMaterial' }]
+      }
     ])
   }
 

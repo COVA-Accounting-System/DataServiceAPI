@@ -1,6 +1,9 @@
 import { Order } from '../models/order.model.js'
 import _orderRepository from '../data/order.repository.js'
 
+import { Config } from '../models/config.model.js'
+import _configRepository from '../data/config.repository.js'
+
 import {
   productionStage,
   maxProductionStage,
@@ -10,6 +13,7 @@ import {
 export default class orderService {
   constructor () {
     this.orderRepository = new _orderRepository(Order)
+    this.configRepository = new _configRepository(Config)
   }
 
   async createOrder (data) {
@@ -17,7 +21,14 @@ export default class orderService {
       ...data.body,
       userId: data.userId
     })
-    return this.orderRepository.createOrders(newOrder)
+    const order = this.orderRepository.createOrders(newOrder)
+    this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { orderNumber: 1 }
+      }
+    )
+    return order
   }
 
   async getOrders (data) {

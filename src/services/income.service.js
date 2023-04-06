@@ -1,12 +1,17 @@
 import { Income } from '../models/income.model.js'
 import _incomeRepository from '../data/income.repository.js'
+
 import { Order } from '../models/order.model.js'
 import _orderRepository from '../data/order.repository.js'
+
+import { Config } from '../models/config.model.js'
+import _configRepository from '../data/config.repository.js'
 
 export default class incomeService {
   constructor () {
     this.incomeRepository = new _incomeRepository(Income)
     this.orderRepository = new _orderRepository(Order)
+    this.configRepository = new _configRepository(Config)
   }
 
   async createIncome (data) {
@@ -14,7 +19,14 @@ export default class incomeService {
       ...data.body,
       userId: data.userId
     })
-    return this.incomeRepository.createIncome(newIncome)
+    const income = this.incomeRepository.createIncome(newIncome)
+    this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { incomeNumber: 1 }
+      }
+    )
+    return income
   }
 
   async createIncomeAndRegisterInOrder (data) {

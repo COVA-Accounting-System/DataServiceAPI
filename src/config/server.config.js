@@ -11,6 +11,7 @@ import order from '../routes/order.route.js'
 import expense from '../routes/expense.route.js'
 import inventoryInput from '../routes/inventoryInput.route.js'
 import inventoryOutput from '../routes/inventoryOutput.route.js'
+import config from '../routes/config.route.js'
 import { verifyToken } from '../middleware/auth.middleware.js'
 import '../config/database.config.js'
 
@@ -43,5 +44,8 @@ app.use('/api/accounting/expense', verifyToken, expense)
 // PRODCUTION
 app.use('/api/product', verifyToken, product)
 app.use('/api/order', verifyToken, order)
+
+// CONFIG
+app.use('/api/config', verifyToken, config)
 
 export default app

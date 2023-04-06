@@ -1,7 +1,11 @@
 import { InventoryOutput } from '../models/inventoryOutput.model.js'
 import _inventoryOutputRepository from '../data/inventoryOutput.repository.js'
+
 import { Order } from '../models/order.model.js'
 import _orderRepository from '../data/order.repository.js'
+
+import { Config } from '../models/config.model.js'
+import _configRepository from '../data/config.repository.js'
 
 export default class inventoryOutputService {
   constructor () {
@@ -9,6 +13,7 @@ export default class inventoryOutputService {
       InventoryOutput
     )
     this.orderRepository = new _orderRepository(Order)
+    this.configRepository = new _configRepository(Config)
   }
 
   async createInventoryOutput (data) {
@@ -16,9 +21,16 @@ export default class inventoryOutputService {
       ...data.body,
       userId: data.userId
     })
-    return this.inventoryOutputRepository.createInventoryOutput(
+    const inventoryOutput = this.inventoryOutputRepository.createInventoryOutput(
       newInventoryOutput
     )
+    this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { inventoryOutputNumber: 1 }
+      }
+    )
+    return inventoryOutput
   }
 
   async createInventoryOutputAndRegisterInOrder (data) {

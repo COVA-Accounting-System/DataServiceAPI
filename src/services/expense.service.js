@@ -4,12 +4,16 @@ import { Expense } from '../models/expense.model.js'
 import _inventoryInputRepository from '../data/inventoryInput.repository.js'
 import { InventoryInput } from '../models/inventoryInput.model.js'
 
+import { Config } from '../models/config.model.js'
+import _configRepository from '../data/config.repository.js'
+
 export default class expenseService {
   constructor () {
     this.expenseRepository = new _expenseRepository(Expense)
     this.inventoryInputRepository = new _inventoryInputRepository(
       InventoryInput
     )
+    this.configRepository = new _configRepository(Config)
   }
 
   async getExpenses (data) {
@@ -22,7 +26,14 @@ export default class expenseService {
       ...data.body,
       userId: data.userId
     })
-    return this.expenseRepository.createExpense(newExpense)
+    const expense = this.expenseRepository.createExpense(newExpense)
+    this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { expenseNumber: 1 }
+      }
+    )
+    return expense
   }
 
   async createExpenseOfInventoryInput (data) {

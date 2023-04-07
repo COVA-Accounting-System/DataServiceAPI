@@ -4,6 +4,9 @@ import _orderRepository from '../data/order.repository.js'
 import { Config } from '../models/config.model.js'
 import _configRepository from '../data/config.repository.js'
 
+import { Client } from '../models/client.model.js'
+import _clientRepository from '../data/client.repository.js'
+
 import {
   productionStage,
   maxProductionStage,
@@ -14,6 +17,7 @@ export default class orderService {
   constructor () {
     this.orderRepository = new _orderRepository(Order)
     this.configRepository = new _configRepository(Config)
+    this.clientRepository = new _clientRepository(Client)
   }
 
   async createOrder (data) {
@@ -101,5 +105,23 @@ export default class orderService {
       orderPaidStateNumber: 2
     }
     return this.orderRepository.updateOrder(query, queryToUpdateWith)
+  }
+
+  async updateStateToNotDelivered (data) {
+    const order = await this.updateOrder(data)
+    await this.clientRepository.decreaseBalance(
+      data.body.orderClient,
+      data.body.orderBalance
+    )
+    return order
+  }
+
+  async updateStateToDelivered (data) {
+    const order = await this.updateOrder(data)
+    await this.clientRepository.increaseBalance(
+      data.body.orderClient,
+      data.body.orderBalance
+    )
+    return order
   }
 }

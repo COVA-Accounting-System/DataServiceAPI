@@ -27,6 +27,35 @@ export default class orderRepository {
       .populate('listOfInventoryOutputs')
   }
 
+  async addToListOfIncomesPrePayed (id, income) {
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $push: { listOfIncomes: { income: income._id } },
+      $inc: { orderBalance: -income.amount, orderPrePayedPrice: income.amount }
+    }
+    return this.updateOrder(query, queryToUpdateWith)
+  }
+
+  async removeFromListOfIncomesPrePayed (id, income) {
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $pull: { listOfIncomes: { income: income._id } },
+      $inc: { orderBalance: income.amount, orderPrePayedPrice: -income.amount }
+    }
+    return this.updateOrder(query, queryToUpdateWith)
+  }
+
+  async updateItemFromListOfIncomesPrePayed (id, oldIncome, newAmount) {
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $inc: {
+        orderBalance: -(newAmount - oldIncome.amount),
+        orderPrePayedPrice: newAmount - oldIncome.amount
+      }
+    }
+    return this.updateOrder(query, queryToUpdateWith)
+  }
+
   async addToListOfIncomes (id, income) {
     const query = { _id: id }
     const queryToUpdateWith = {
@@ -45,17 +74,6 @@ export default class orderRepository {
     return this.updateOrder(query, queryToUpdateWith)
   }
 
-  async addToListOfInventoryOutput (id, inventoryOutput) {
-    const query = { _id: id }
-    const queryToUpdateWith = {
-      $push: {
-        listOfInventoryOutputs: { inventoryOutput: inventoryOutput._id }
-      },
-      $inc: { orderMaterialCosts: inventoryOutput.estimatedPrice }
-    }
-    return this.updateOrder(query, queryToUpdateWith)
-  }
-
   async updateItemFromListOfIncomes (id, oldIncome, newAmount) {
     const query = { _id: id }
     const queryToUpdateWith = {
@@ -65,6 +83,17 @@ export default class orderRepository {
       }
     }
     // const queryToUpdateWith = income
+    return this.updateOrder(query, queryToUpdateWith)
+  }
+
+  async addToListOfInventoryOutput (id, inventoryOutput) {
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $push: {
+        listOfInventoryOutputs: { inventoryOutput: inventoryOutput._id }
+      },
+      $inc: { orderMaterialCosts: inventoryOutput.estimatedPrice }
+    }
     return this.updateOrder(query, queryToUpdateWith)
   }
 

@@ -41,6 +41,24 @@ router.put('/delete', async (req, res) => {
   }
 })
 
+router.put('/updateStateToNotDelivered', async (req, res) => {
+  try {
+    const order = await orderService.updateStateToNotDelivered(req)
+    res.json(order)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.put('/updateStateToDelivered', async (req, res) => {
+  try {
+    const order = await orderService.updateStateToDelivered(req)
+    res.json(order)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.put('/changeStateBackward', async (req, res) => {
   try {
     const newOrder = await orderService.changeStateBackward(req)

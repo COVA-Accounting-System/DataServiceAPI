@@ -7,6 +7,7 @@ export const validateClientData = (req, res, next) => {
     phoneNumber: Joi.string().allow('').max(50),
     phoneCountryCode: Joi.string().allow('').max(50),
     address: Joi.string().min(0).max(200).allow(''),
+    balance: Joi.number().required(),
     uiName: Joi.string().min(1).max(100).required()
   })
 
@@ -100,6 +101,7 @@ export const validateOrderData = (req, res, next) => {
     orderProductAmount: Joi.number().required(),
     orderProductAmountType: Joi.string().max(50).required(),
     orderPrice: Joi.number().required(),
+    orderPrePayedPrice: Joi.number().required(),
     orderPayedPrice: Joi.number().required(),
     orderBalance: Joi.number().required(),
     orderCreationDate: Joi.date().required(),
@@ -158,6 +160,7 @@ export const validateIncomeData = (req, res, next) => {
     accountingSeat: Joi.string().required(),
     client: Joi.string().required(),
     order: Joi.string().required(),
+    typeOfIncome: Joi.string().required(),
     date: Joi.string().required(),
     amount: Joi.string().required(),
     concept: Joi.string().required()

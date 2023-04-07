@@ -15,6 +15,11 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Order'
     },
+    typeOfIncome: {
+      type: String,
+      required: true,
+      trim: true
+    },
     date: {
       type: String,
       required: true,

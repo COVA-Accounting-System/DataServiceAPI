@@ -47,6 +47,11 @@ const schema = new mongoose.Schema(
       required: true,
       default: 0
     },
+    orderPrePayedPrice: {
+      type: Number,
+      required: true,
+      trim: true
+    },
     orderPayedPrice: {
       type: Number,
       required: true,

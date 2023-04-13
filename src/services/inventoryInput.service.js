@@ -19,7 +19,7 @@ export default class inventoryInputService {
     })
     const inventoryInput =
       this.inventoryInputRepository.createInventoryInput(newInventoryInput)
-    this.configRepository.updateConfig(
+    await this.configRepository.updateConfig(
       { userId: data.userId },
       {
         $inc: { inventoryInputNumber: 1 }

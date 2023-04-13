@@ -52,6 +52,12 @@ export default class incomeService {
     if (data.body.typeOfIncome === 'Pago de pedido entregado') {
       await this.orderRepository.addToListOfIncomes(data.body.order, income)
     }
+    await this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { incomeNumber: 1 }
+      }
+    )
     return income
   }
 

@@ -46,6 +46,12 @@ export default class inventoryOutputService {
       data.body.order,
       inventoryOutput
     )
+    await this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { inventoryOutputNumber: 1 }
+      }
+    )
     return inventoryOutput
   }
 

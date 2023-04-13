@@ -84,6 +84,7 @@ export const validateProductData = (req, res, next) => {
 }
 
 export const validateOrderData = (req, res, next) => {
+  // console.log(req.body)
   const schema = Joi.object({
     orderClient: Joi.string().required(),
     listOfInventoryOutputs: Joi.array().items(
@@ -97,7 +98,7 @@ export const validateOrderData = (req, res, next) => {
       })
     ),
     orderProduct: Joi.string().required(),
-    orderNumber: Joi.string().required().max(50),
+    orderNumber: Joi.number().required(),
     orderProductAmount: Joi.number().required(),
     orderProductAmountType: Joi.string().max(50).required(),
     orderPrice: Joi.number().required(),
@@ -157,7 +158,7 @@ export const validateRawMaterialData = (req, res, next) => {
 
 export const validateIncomeData = (req, res, next) => {
   const schema = Joi.object({
-    accountingSeat: Joi.string().required(),
+    accountingSeat: Joi.number().required(),
     client: Joi.string().required(),
     order: Joi.string().required(),
     typeOfIncome: Joi.string().required(),
@@ -176,7 +177,7 @@ export const validateIncomeData = (req, res, next) => {
 
 export const validateExpenseData = (req, res, next) => {
   const schema = Joi.object({
-    accountingSeat: Joi.string().required(),
+    accountingSeat: Joi.number().required(),
     category: Joi.string().required(),
     inventoryInput: Joi.string().allow(''),
     creditorEmployee: Joi.string().allow(''),
@@ -197,7 +198,7 @@ export const validateExpenseData = (req, res, next) => {
 
 export const validateInventoryInputData = (req, res, next) => {
   const schema = Joi.object({
-    numberOfInput: Joi.string().required(),
+    numberOfInput: Joi.number().required(),
     provider: Joi.string().required(),
     date: Joi.date().required(),
     listOfMaterials: Joi.array().items(
@@ -221,7 +222,7 @@ export const validateInventoryInputData = (req, res, next) => {
 
 export const validateInventoryOutputData = (req, res, next) => {
   const schema = Joi.object({
-    numberOfInput: Joi.string().required(),
+    numberOfInput: Joi.number().required(),
     // employee: Joi.string().required(),
     order: Joi.string().required(),
     date: Joi.date().required(),

@@ -17,6 +17,7 @@ const schema = new mongoose.Schema(
     inventoryOutputNumber: {
       type: Number,
       required: true,
+      default: 0,
       trim: true
     },
     incomeNumber: {

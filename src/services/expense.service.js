@@ -51,6 +51,12 @@ export default class expenseService {
       inventoryInput: inventoryInput._id
     })
     const expense = await this.expenseRepository.createExpense(newExpense)
+    await this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { expenseNumber: 1, inventoryInputNumber: 1 }
+      }
+    )
     return {
       expense,
       inventoryInput

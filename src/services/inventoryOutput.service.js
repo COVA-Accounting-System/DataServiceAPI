@@ -21,9 +21,8 @@ export default class inventoryOutputService {
       ...data.body,
       userId: data.userId
     })
-    const inventoryOutput = this.inventoryOutputRepository.createInventoryOutput(
-      newInventoryOutput
-    )
+    const inventoryOutput =
+      this.inventoryOutputRepository.createInventoryOutput(newInventoryOutput)
     this.configRepository.updateConfig(
       { userId: data.userId },
       {
@@ -88,6 +87,25 @@ export default class inventoryOutputService {
   async updateInventoryOutput (data) {
     const { _id, ...queryToUpdateWith } = data.body
     const query = { _id }
+    const oldInventoryOutput =
+      await this.inventoryOutputRepository.getInventoryOutput({ _id })
+
+    if (data.body.order !== oldInventoryOutput.order) {
+      await this.orderRepository.removeFromListOfInventoryOutput(
+        oldInventoryOutput.order,
+        oldInventoryOutput
+      )
+      await this.orderRepository.addToListOfInventoryOutput(
+        data.body.order,
+        data.body
+      )
+    } else {
+      await this.orderRepository.updateOrderMaterialCost(
+        data.body.order,
+        oldInventoryOutput.estimatedPrice,
+        data.body.estimatedPrice
+      )
+    }
     return this.inventoryOutputRepository.updateInventoryOutput(
       query,
       queryToUpdateWith

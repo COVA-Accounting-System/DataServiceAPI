@@ -7,8 +7,25 @@ export default class orderRepository {
     return this.Order.findOne(query)
       .populate('orderClient')
       .populate('orderProduct')
-      .populate('listOfIncomes')
-      .populate('listOfInventoryOutputs')
+      .populate({
+        path: 'listOfInventoryOutputs',
+        populate: {
+          path: 'inventoryOutput',
+          populate: {
+            path: 'listOfMaterials',
+            populate: {
+              path: 'rawMaterial'
+            }
+          }
+        }
+      })
+      .populate({
+        path: 'listOfIncomes',
+        populate: {
+          path: 'income',
+          model: 'Income'
+        }
+      })
   }
 
   async getOrderById (id) {
@@ -16,7 +33,25 @@ export default class orderRepository {
       .populate('orderClient')
       .populate('orderProduct')
       .populate('listOfIncomes')
-      .populate('listOfInventoryOutputs')
+      .populate({
+        path: 'listOfInventoryOutputs',
+        populate: {
+          path: 'inventoryOutput',
+          populate: {
+            path: 'listOfMaterials',
+            populate: {
+              path: 'rawMaterial'
+            }
+          }
+        }
+      })
+      .populate({
+        path: 'listOfIncomes',
+        populate: {
+          path: 'income',
+          model: 'Income'
+        }
+      })
   }
 
   async getOrders (query) {
@@ -24,7 +59,25 @@ export default class orderRepository {
       .populate('orderClient')
       .populate('orderProduct')
       .populate('listOfIncomes')
-      .populate('listOfInventoryOutputs')
+      .populate({
+        path: 'listOfInventoryOutputs',
+        populate: {
+          path: 'inventoryOutput',
+          populate: {
+            path: 'listOfMaterials',
+            populate: {
+              path: 'rawMaterial'
+            }
+          }
+        }
+      })
+      .populate({
+        path: 'listOfIncomes',
+        populate: {
+          path: 'income',
+          model: 'Income'
+        }
+      })
   }
 
   async addToListOfIncomesPrePayed (id, income) {
@@ -116,5 +169,15 @@ export default class orderRepository {
   async updateOrder (query, queryToUpdateWith) {
     await this.Order.findOneAndUpdate(query, queryToUpdateWith)
     return this.getOrder(query)
+  }
+
+  async updateOrderMaterialCost (id, oldMaterialCost, newMaterialCost) {
+    const query = { _id: id }
+    const queryToUpdateWith = {
+      $inc: {
+        orderMaterialCosts: newMaterialCost - oldMaterialCost
+      }
+    }
+    return this.updateOrder(query, queryToUpdateWith)
   }
 }

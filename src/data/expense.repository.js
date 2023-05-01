@@ -38,4 +38,21 @@ export default class employeeRepository {
   async deleteExpense (query) {
     return this.Expense.findOneAndDelete(query)
   }
+
+  async getExpensesByDate (startDate, endDate) {
+    return this.Expense.find({
+      date: {
+        $gte: startDate,
+        $lte: endDate
+      },
+      isVisible: true
+    }).populate([
+      { path: 'creditorEmployee' },
+      { path: 'creditorProvider' },
+      {
+        path: 'inventoryInput',
+        populate: [{ path: 'listOfMaterials.rawMaterial' }]
+      }
+    ])
+  }
 }

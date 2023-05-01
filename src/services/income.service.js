@@ -39,18 +39,18 @@ export default class incomeService {
       userId: data.userId
     })
     const income = await this.incomeRepository.createIncome(newIncome)
-    await this.clientRepository.decreaseBalance(
-      data.body.client,
-      data.body.amount
-    )
     if (data.body.typeOfIncome === 'Pago por adelantado') {
       await this.orderRepository.addToListOfIncomesPrePayed(
         data.body.order,
         income
       )
     }
-    if (data.body.typeOfIncome === 'Pago de pedido entregado') {
+    if (data.body.typeOfIncome === 'Pago por venta') {
       await this.orderRepository.addToListOfIncomes(data.body.order, income)
+      await this.clientRepository.decreaseBalance(
+        data.body.client,
+        data.body.amount
+      )
     }
     await this.configRepository.updateConfig(
       { userId: data.userId },
@@ -65,20 +65,20 @@ export default class incomeService {
     const income = await this.incomeRepository.deleteIncome({
       _id: data.body._id
     })
-    await this.clientRepository.increaseBalance(
-      data.body.client,
-      data.body.amount
-    )
     if (data.body.typeOfIncome === 'Pago por adelantado') {
       await this.orderRepository.removeFromListOfIncomesPrePayed(
         data.body.order,
         income
       )
     }
-    if (data.body.typeOfIncome === 'Pago de pedido entregado') {
+    if (data.body.typeOfIncome === 'Pago por venta') {
       await this.orderRepository.removeFromListOfIncomes(
         data.body.order,
         income
+      )
+      await this.clientRepository.increaseBalance(
+        data.body.client,
+        data.body.amount
       )
     }
     return income
@@ -103,10 +103,6 @@ export default class incomeService {
     const query = { _id: data.body._id }
     const queryToUpdateWith = { ...data.body }
     const oldIncome = await this.getIncome(query)
-    await this.clientRepository.decreaseBalance(
-      data.body.client,
-      data.body.amount - oldIncome.amount
-    )
     if (data.body.typeOfIncome === 'Pago por adelantado') {
       await this.orderRepository.updateItemFromListOfIncomesPrePayed(
         data.body.order,
@@ -114,7 +110,11 @@ export default class incomeService {
         data.body.amount
       )
     }
-    if (data.body.typeOfIncome === 'Pago de pedido entregado') {
+    if (data.body.typeOfIncome === 'Pago por venta') {
+      await this.clientRepository.decreaseBalance(
+        data.body.client,
+        data.body.amount - oldIncome.amount
+      )
       await this.orderRepository.updateItemFromListOfIncomes(
         data.body.order,
         oldIncome,

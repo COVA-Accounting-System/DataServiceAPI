@@ -1,4 +1,4 @@
-export default class employeeRepository {
+export default class expenseRepository {
   constructor (Expense) {
     this.Expense = Expense
   }
@@ -39,20 +39,14 @@ export default class employeeRepository {
     return this.Expense.findOneAndDelete(query)
   }
 
-  async getExpensesByDate (startDate, endDate) {
+  async getExpensesByDate (startDate, endDate, userId) {
     return this.Expense.find({
       date: {
         $gte: startDate,
         $lte: endDate
       },
-      isVisible: true
-    }).populate([
-      { path: 'creditorEmployee' },
-      { path: 'creditorProvider' },
-      {
-        path: 'inventoryInput',
-        populate: [{ path: 'listOfMaterials.rawMaterial' }]
-      }
-    ])
+      isVisible: true,
+      userId
+    })
   }
 }

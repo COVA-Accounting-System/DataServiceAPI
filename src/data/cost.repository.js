@@ -4,7 +4,13 @@ export default class CostRepository {
   }
 
   async getCostReport (query) {
-    return this.cost.findOne(query)
+    return this.cost.findOne(query).populate({
+      path: 'expenses',
+      populate: {
+        path: 'expense',
+        model: 'Expense'
+      }
+    })
   }
 
   async createCostReport (newCostReport) {
@@ -12,15 +18,22 @@ export default class CostRepository {
   }
 
   async updateCostReport (id, newCostReport) {
-    console.log('editar')
-    return this.cost.findOneAndUpdate(
-      id,
-      {
-        startDate: newCostReport.startDate,
-        endDate: newCostReport.endDate,
-        $set: { expenses: newCostReport.expenses }
-      },
-      { new: true }
-    )
+    return this.cost
+      .findOneAndUpdate(
+        id,
+        {
+          startDate: newCostReport.startDate,
+          endDate: newCostReport.endDate,
+          $set: { expenses: newCostReport.expenses }
+        },
+        { new: true }
+      )
+      .populate({
+        path: 'expenses',
+        populate: {
+          path: 'expense',
+          model: 'Expense'
+        }
+      })
   }
 }

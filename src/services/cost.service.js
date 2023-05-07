@@ -20,9 +20,7 @@ export default class costService {
         req.userId
       )
 
-      const expenses = expensesArray.map((expense) => (
-        { expense: expense._id }
-      ))
+      const expenses = expensesArray.map(expense => ({ expense: expense._id }))
 
       const existingCostReport = await this.costRepository.getCostReport({
         userId: req.userId
@@ -59,11 +57,47 @@ export default class costService {
     }
   }
 
+  generateInitialReport = async (req, res) => {
+    try {
+      const existingCostReport = await this.costRepository.getCostReport({
+        userId: req.userId
+      })
+
+      if (!existingCostReport) {
+        return res
+          .status(400)
+          .json({ message: 'Does not exist a report for this user' })
+      }
+
+      const expensesArray = await this.expenseRepository.getExpensesByDate(
+        existingCostReport.startDate,
+        existingCostReport.endDate,
+        existingCostReport.userId
+      )
+
+      const expenses = expensesArray.map(expense => ({ expense: expense._id }))
+
+      const newCostReport = await this.costRepository.updateCostReport(
+        { userId: req.userId },
+        {
+          startDate: existingCostReport.startDate,
+          endDate: existingCostReport.endDate,
+          expenses
+        }
+      )
+
+      res.status(200).json(newCostReport)
+    } catch (err) {
+      console.error(err)
+      res.status(400).json({ message: err.message })
+    }
+  }
+
   getReportData = async (req, res) => {
     try {
       const userId = req.userId
       const costReport = await this.costRepository.getCostReport({
-        _id: userId
+        userId
       })
       res.status(200).json(costReport)
     } catch (err) {

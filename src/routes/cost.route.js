@@ -8,4 +8,6 @@ router.get('/', costService.getReportData)
 
 router.post('/generateReport', costService.createReportAndReturnData)
 
+router.post('/generateInitialReport', costService.generateInitialReport)
+
 export default router

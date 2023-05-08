@@ -180,4 +180,18 @@ export default class orderRepository {
     }
     return this.updateOrder(query, queryToUpdateWith)
   }
+
+  async getFinishedOrderByDate (startDate, endDate, userId) {
+    return this.Order.find({
+      orderStateNumber: {
+        $gte: 2
+      },
+      orderDate: {
+        $gte: startDate,
+        $lte: endDate
+      },
+      isVisible: true,
+      userId
+    })
+  }
 }

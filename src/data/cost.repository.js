@@ -24,7 +24,10 @@ export default class CostRepository {
         {
           startDate: newCostReport.startDate,
           endDate: newCostReport.endDate,
-          $set: { expenses: newCostReport.expenses }
+          $set: {
+            expenses: newCostReport.expenses,
+            orders: newCostReport.orders
+          }
         },
         { new: true }
       )
@@ -33,6 +36,13 @@ export default class CostRepository {
         populate: {
           path: 'expense',
           model: 'Expense'
+        }
+      })
+      .populate({
+        path: 'orders',
+        populate: {
+          path: 'order',
+          model: 'Order'
         }
       })
   }

@@ -17,6 +17,11 @@ const schema = new mongoose.Schema(
         expense: { type: mongoose.Schema.Types.ObjectId, ref: 'Expense' }
       }
     ],
+    orders: [
+      {
+        order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' }
+      }
+    ],
     userId: {
       type: mongoose.Schema.Types.ObjectId
     }

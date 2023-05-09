@@ -32,6 +32,15 @@ router.post('/', validateExpenseData, async (req, res) => {
   }
 })
 
+router.post('/', validateExpenseData, async (req, res) => {
+  try {
+    const newExpense = await expenseService.createExpense(req)
+    res.json(newExpense)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.put('/delete', async (req, res) => {
   try {
     const expense = await expenseService.deleteExpense(req)

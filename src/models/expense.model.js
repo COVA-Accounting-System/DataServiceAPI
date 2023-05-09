@@ -27,6 +27,18 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    singleOrder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order'
+    },
+    orderList: [
+      {
+        order: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Order'
+        }
+      }
+    ],
     inventoryInput: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'InventoryInput'

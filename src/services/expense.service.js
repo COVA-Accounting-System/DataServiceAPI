@@ -36,6 +36,10 @@ export default class expenseService {
     return expense
   }
 
+  async createIndirectCostExepense (req) {
+
+  }
+
   async createExpenseOfInventoryInput (data) {
     const newInventoryInput = new InventoryInput({
       ...data.body.inventoryData,

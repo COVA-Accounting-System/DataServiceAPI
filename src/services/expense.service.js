@@ -21,6 +21,7 @@ export default class expenseService {
     )
     this.orderRepository = new _orderRepository(Order)
     this.configRepository = new _configRepository(Config)
+
   }
 
   roundToFixed (num) {
@@ -94,8 +95,8 @@ export default class expenseService {
         orders,
         data.body.amount
       )
-      ordersWithCosts.forEach(order => {
-        this.orderRepository.changeIndirectCosts(
+      ordersWithCosts.forEach(async order => {
+        await this.orderRepository.changeIndirectCosts(
           { _id: order.id },
           order.indirectCost
         )
@@ -144,6 +145,48 @@ export default class expenseService {
     return this.expenseRepository.updateExpense(query, queryToUpdateWith)
   }
 
+  async updateAddIndirectExpensesOfAnOrder (orderId) {
+    const expenses = await this.expenseRepository.getExpensesGivenAnOrder(
+      orderId
+    )
+    expenses.map(async expense => {
+      const ordersIds = expense.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+
+      const ordersCosts = this.calculateIndirectCosts(orders, expense.amount)
+      // console.log(ordersCosts)
+      ordersCosts.map(async order => {
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          order.indirectCost
+        )
+      })
+    })
+  }
+
+  async updateRemoveIndirectExpensesOfAnOrder (orderId) {
+    const expenses = await this.expenseRepository.getExpensesGivenAnOrder(
+      orderId
+    )
+    expenses.map(async expense => {
+      const ordersIds = expense.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+
+      const ordersCosts = this.calculateIndirectCosts(orders, expense.amount)
+      // console.log(ordersCosts)
+      ordersCosts.map(async order => {
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          -order.indirectCost
+        )
+      })
+    })
+  }
+
   async updateExpense (data) {
     const oldExpense =
       await this.expenseRepository.getExpenseByIdWithoutPopulate({
@@ -165,8 +208,8 @@ export default class expenseService {
         orders,
         oldExpense.amount
       )
-      ordersWithCosts.forEach(order => {
-        this.orderRepository.changeIndirectCosts(
+      ordersWithCosts.forEach(async order => {
+        await this.orderRepository.changeIndirectCosts(
           { _id: order.id },
           -order.indirectCost
         )
@@ -180,13 +223,12 @@ export default class expenseService {
         newOrders,
         data.body.amount
       )
-      newOrdersWithCosts.forEach(order => {
-        this.orderRepository.changeIndirectCosts(
+      newOrdersWithCosts.forEach(async order => {
+        await this.orderRepository.changeIndirectCosts(
           { _id: order.id },
           order.indirectCost
         )
       })
-
     }
     const { _id, ...queryToUpdateWith } = data.body
     const query = { _id }
@@ -241,8 +283,8 @@ export default class expenseService {
         orders,
         data.body.amount
       )
-      ordersWithCosts.forEach(order => {
-        this.orderRepository.changeIndirectCosts(
+      ordersWithCosts.map(async order => {
+        await this.orderRepository.changeIndirectCosts(
           { _id: order.id },
           -order.indirectCost
         )

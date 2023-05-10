@@ -4,6 +4,8 @@ import _orderRepository from '../data/order.repository.js'
 import { Config } from '../models/config.model.js'
 import _configRepository from '../data/config.repository.js'
 
+import _expenseService from './expense.service.js'
+
 import { Client } from '../models/client.model.js'
 import _clientRepository from '../data/client.repository.js'
 
@@ -17,6 +19,7 @@ export default class orderService {
   constructor () {
     this.orderRepository = new _orderRepository(Order)
     this.configRepository = new _configRepository(Config)
+    this.expenseService = new _expenseService()
     this.clientRepository = new _clientRepository(Client)
   }
 
@@ -53,7 +56,16 @@ export default class orderService {
   async updateOrder (data) {
     const { _id, ...queryToUpdateWith } = data.body
     const query = { _id }
-    return this.orderRepository.updateOrder(query, queryToUpdateWith)
+    console.log('aqui esta el data')
+    console.log(queryToUpdateWith)
+    delete queryToUpdateWith.orderIndirectCosts
+    console.log('aqui esta el data sin cost')
+    console.log(queryToUpdateWith)
+    await this.expenseService.updateRemoveIndirectExpensesOfAnOrder(data.body._id)
+    const order = await this.orderRepository.updateOrder(query, queryToUpdateWith)
+    await this.expenseService.updateAddIndirectExpensesOfAnOrder(data.body._id)
+   
+    return {}
   }
 
   async changeStateBackward (data) {

@@ -62,6 +62,10 @@ export default class orderRepository {
       })
   }
 
+  async getOrderByIdWithoutPopulate (id) {
+    return this.Order.findById(id)
+  }
+
   async getOrders (query) {
     return this.Order.find(query)
       .populate('orderClient')
@@ -211,9 +215,13 @@ export default class orderRepository {
   }
 
   async changeIndirectCosts (id, newIndirectCosts) {
-    return this.Order.findOneAndUpdate(
+    // console.log('aqui si entra' + id + 'para restar' + newIndirectCosts)
+    const order =  await this.Order.findOneAndUpdate(
       id,
       { $inc: { orderIndirectCosts: newIndirectCosts } }
+      , { new: true }
     )
+    // console.log(order)
+    return order
   }
 }

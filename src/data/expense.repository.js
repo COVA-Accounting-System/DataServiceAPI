@@ -1,3 +1,5 @@
+import { EXPENSE_CATEGORIES } from '../enums/expenseCategories.js'
+
 export default class expenseRepository {
   constructor (Expense) {
     this.Expense = Expense
@@ -29,6 +31,13 @@ export default class expenseRepository {
 
   async getExpenseByIdWithoutPopulate (expensesId) {
     return this.Expense.findOne(expensesId)
+  }
+
+  async getExpensesGivenAnOrder (orderId) {
+    return this.Expense.find({
+      'orderList.order': orderId,
+      category: EXPENSE_CATEGORIES.INDIRECT_COSTS
+    })
   }
 
   async createExpense (newExpense) {

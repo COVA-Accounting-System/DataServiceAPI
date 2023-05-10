@@ -28,6 +28,14 @@ export default class orderRepository {
       })
   }
 
+  async getOrdersByIdWithoutPopulate (ordersIds) {
+    return this.Order.find({ _id: { $in: ordersIds } })
+  }
+
+  async getOrderByIdWithoutPopulate (id) {
+    return this.Order.findById(id)
+  }
+
   async getOrderById (id) {
     return this.Order.findById(id)
       .populate('orderClient')
@@ -193,5 +201,19 @@ export default class orderRepository {
       isVisible: true,
       userId
     })
+  }
+
+  async changeLabourCosts (id, newLabourCosts) {
+    return this.Order.findOneAndUpdate(
+      id,
+      { $inc: { orderLabourCosts: newLabourCosts } }
+    )
+  }
+
+  async changeIndirectCosts (id, newIndirectCosts) {
+    return this.Order.findOneAndUpdate(
+      id,
+      { $inc: { orderIndirectCosts: newIndirectCosts } }
+    )
   }
 }

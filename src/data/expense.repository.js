@@ -27,6 +27,10 @@ export default class expenseRepository {
     ])
   }
 
+  async getExpenseByIdWithoutPopulate (expensesId) {
+    return this.Expense.findOne(expensesId)
+  }
+
   async createExpense (newExpense) {
     const expense = await newExpense.save()
     return this.getExpense({ _id: expense._id })

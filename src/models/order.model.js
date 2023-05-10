@@ -67,6 +67,16 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    orderLabourCosts: {
+      type: Number,
+      required: true,
+      trim: true
+    },
+    orderIndirectCosts: {
+      type: Number,
+      required: true,
+      trim: true
+    },
     orderCreationDate: {
       type: String,
       required: false,

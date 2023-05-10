@@ -111,6 +111,8 @@ export const validateOrderData = (req, res, next) => {
     orderStateNumber: Joi.number().required(),
     orderPaidState: Joi.string().max(50).required(),
     orderPaidStateNumber: Joi.number().required(),
+    orderLabourCosts: Joi.number().required(),
+    orderIndirectCosts: Joi.number().required(),
     orderMaterialCosts: Joi.number().required(),
     uiName: Joi.string().min(1).max(100).required(),
     orderFeatures: Joi.array().items(

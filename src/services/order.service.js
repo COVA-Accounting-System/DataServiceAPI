@@ -56,11 +56,7 @@ export default class orderService {
   async updateOrder (data) {
     const { _id, ...queryToUpdateWith } = data.body
     const query = { _id }
-    console.log('aqui esta el data')
-    console.log(queryToUpdateWith)
     delete queryToUpdateWith.orderIndirectCosts
-    console.log('aqui esta el data sin cost')
-    console.log(queryToUpdateWith)
     await this.expenseService.updateRemoveIndirectExpensesOfAnOrder(data.body._id)
     const order = await this.orderRepository.updateOrder(query, queryToUpdateWith)
     await this.expenseService.updateAddIndirectExpensesOfAnOrder(data.body._id)

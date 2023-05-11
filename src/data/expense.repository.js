@@ -33,6 +33,13 @@ export default class expenseRepository {
     return this.Expense.findOne(expensesId)
   }
 
+  async getLabourExpensesGivenAnOrder (orderId) {
+    return this.Expense.find({
+      singleOrder: orderId,
+      category: EXPENSE_CATEGORIES.LABOUR
+    }).populate([{ path: 'creditorEmployee' }])
+  }
+
   async getExpensesGivenAnOrder (orderId) {
     return this.Expense.find({
       'orderList.order': orderId,

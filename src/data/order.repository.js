@@ -215,13 +215,11 @@ export default class orderRepository {
   }
 
   async changeIndirectCosts (id, newIndirectCosts) {
-    // console.log('aqui si entra' + id + 'para restar' + newIndirectCosts)
     const order =  await this.Order.findOneAndUpdate(
       id,
       { $inc: { orderIndirectCosts: newIndirectCosts } }
       , { new: true }
     )
-    // console.log(order)
     return order
   }
 }

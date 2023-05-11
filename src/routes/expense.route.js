@@ -77,6 +77,16 @@ router.put('/updateExpenseAndInventoryInput', async (req, res) => {
   }
 })
 
+router.get('/getExpensesGivenAnOrder/:singleOrder', async (req, res) => {
+  try {
+    const { singleOrder } = req.params
+    const expenses = await expenseService.getExpensesGivenAnOrder(singleOrder)
+    res.json(expenses)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.delete('/delete', async (req, res) => {
   try {
     await expenseService.deleteExpense(req)

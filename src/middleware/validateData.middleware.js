@@ -188,7 +188,8 @@ export const validateExpenseData = (req, res, next) => {
     singleOrder: Joi.string().allow(''),
     orderList: Joi.array().items(
       Joi.object({
-        order: Joi.string().required()
+        order: Joi.string().required(),
+        indirectCost: Joi.number().allow(''),
       })
     ),
     date: Joi.date().required(),

@@ -36,6 +36,11 @@ const schema = new mongoose.Schema(
         order: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Order'
+        },
+        indirectCost: {
+          type: Number,
+          required: false,
+          trim: true
         }
       }
     ],

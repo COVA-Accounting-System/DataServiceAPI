@@ -61,7 +61,7 @@ export default class orderService {
     const order = await this.orderRepository.updateOrder(query, queryToUpdateWith)
     await this.expenseService.updateAddIndirectExpensesOfAnOrder(data.body._id)
    
-    return {}
+    return order
   }
 
   async changeStateBackward (data) {

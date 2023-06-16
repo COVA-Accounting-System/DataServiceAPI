@@ -24,6 +24,7 @@ router.post('/', validateRawMaterialData, async (req, res) => {
 })
 
 router.put('/update', async (req, res) => {
+  console.log(req.body)
   try {
     const rawMaterial = await rawMaterialService.updateRawMaterial(req)
     res.json(rawMaterial)

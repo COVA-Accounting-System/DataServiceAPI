@@ -10,10 +10,22 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     },
-    inventoryOutput: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'InventoryOutput'
-    },
+    listOfIncomes: [
+      {
+        income: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Income'
+        }
+      }
+    ],
+    listOfInventoryOutputs: [
+      {
+        inventoryOutput: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'InventoryOutput'
+        }
+      }
+    ],
     orderNumber: {
       type: String,
       required: true,
@@ -35,6 +47,36 @@ const schema = new mongoose.Schema(
       required: true,
       default: 0
     },
+    orderPrePayedPrice: {
+      type: Number,
+      required: true,
+      trim: true
+    },
+    orderPayedPrice: {
+      type: Number,
+      required: true,
+      trim: true
+    },
+    orderBalance: {
+      type: Number,
+      required: true,
+      trim: true
+    },
+    orderMaterialCosts: {
+      type: Number,
+      required: true,
+      trim: true
+    },
+    orderLabourCosts: {
+      type: Number,
+      required: true,
+      trim: true
+    },
+    orderIndirectCosts: {
+      type: Number,
+      required: true,
+      trim: true
+    },
     orderCreationDate: {
       type: String,
       required: false,
@@ -53,6 +95,16 @@ const schema = new mongoose.Schema(
     orderStateNumber: {
       type: Number,
       required: false,
+      trim: true
+    },
+    orderPaidState: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    orderPaidStateNumber: {
+      type: Number,
+      required: true,
       trim: true
     },
     uiName: {

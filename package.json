@@ -6,8 +6,7 @@
   "main": "server.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --forceExit",
-    "start": "node --watch server.js",
-    "standard-fix": "standard --fix"
+    "start": "node --watch server.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,9 +23,8 @@
   },
   "devDependencies": {
     "jest": "^28.1.3",
-    "standard": "^17.0.0",
     "supertest": "^6.2.4"
-  }, 
+  },
   "eslintConfig": {
     "extends": "standard"
   }

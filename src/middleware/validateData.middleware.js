@@ -7,6 +7,7 @@ export const validateClientData = (req, res, next) => {
     phoneNumber: Joi.string().allow('').max(50),
     phoneCountryCode: Joi.string().allow('').max(50),
     address: Joi.string().min(0).max(200).allow(''),
+    balance: Joi.number().required(),
     uiName: Joi.string().min(1).max(100).required()
   })
 
@@ -44,7 +45,7 @@ export const validateProviderData = (req, res, next) => {
   const schema = Joi.object({
     storeName: Joi.string().min(1).max(50).required(),
     uiName: Joi.string().min(1).max(100).required(),
-    nit: Joi.number().allow(''),
+    nit: Joi.string().allow(''),
     country: Joi.string().max(50).allow(''),
     city: Joi.string().max(50).allow(''),
     phoneNumber: Joi.string().allow('').max(50),
@@ -83,18 +84,36 @@ export const validateProductData = (req, res, next) => {
 }
 
 export const validateOrderData = (req, res, next) => {
+  // console.log(req.body)
   const schema = Joi.object({
     orderClient: Joi.string().required(),
-    inventoryOutput: Joi.string().allow(''),
+    listOfInventoryOutputs: Joi.array().items(
+      Joi.object({
+        inventoryOutput: Joi.string().required()
+      })
+    ),
+    listOfIncomes: Joi.array().items(
+      Joi.object({
+        incomes: Joi.string().required()
+      })
+    ),
     orderProduct: Joi.string().required(),
-    orderNumber: Joi.string().required().max(50),
-    orderProductAmount: Joi.number().allow(''),
-    orderProductAmountType: Joi.string().max(50).allow(''),
+    orderNumber: Joi.number().required(),
+    orderProductAmount: Joi.number().required(),
+    orderProductAmountType: Joi.string().max(50).required(),
     orderPrice: Joi.number().required(),
-    orderCreationDate: Joi.date().allow(''),
-    orderDeliveryDate: Joi.date().allow(''),
-    orderState: Joi.string().max(50).allow(''),
-    orderStateNumber: Joi.number().allow(''),
+    orderPrePayedPrice: Joi.number().required(),
+    orderPayedPrice: Joi.number().required(),
+    orderBalance: Joi.number().required(),
+    orderCreationDate: Joi.date().required(),
+    orderDeliveryDate: Joi.date().required(),
+    orderState: Joi.string().max(50).required(),
+    orderStateNumber: Joi.number().required(),
+    orderPaidState: Joi.string().max(50).required(),
+    orderPaidStateNumber: Joi.number().required(),
+    orderLabourCosts: Joi.number().required(),
+    orderIndirectCosts: Joi.number().required(),
+    orderMaterialCosts: Joi.number().required(),
     uiName: Joi.string().min(1).max(100).required(),
     orderFeatures: Joi.array().items(
       Joi.object({
@@ -141,9 +160,10 @@ export const validateRawMaterialData = (req, res, next) => {
 
 export const validateIncomeData = (req, res, next) => {
   const schema = Joi.object({
-    accountingSeat: Joi.string().required(),
+    accountingSeat: Joi.number().required(),
     client: Joi.string().required(),
     order: Joi.string().required(),
+    typeOfIncome: Joi.string().required(),
     date: Joi.string().required(),
     amount: Joi.string().required(),
     concept: Joi.string().required()
@@ -159,12 +179,19 @@ export const validateIncomeData = (req, res, next) => {
 
 export const validateExpenseData = (req, res, next) => {
   const schema = Joi.object({
-    accountingSeat: Joi.string().required(),
+    accountingSeat: Joi.number().required(),
     category: Joi.string().required(),
     inventoryInput: Joi.string().allow(''),
     creditorEmployee: Joi.string().allow(''),
     creditorProvider: Joi.string().allow(''),
     creditorEntity: Joi.string().allow(''),
+    singleOrder: Joi.string().allow(''),
+    orderList: Joi.array().items(
+      Joi.object({
+        order: Joi.string().required(),
+        indirectCost: Joi.number().allow(''),
+      })
+    ),
     date: Joi.date().required(),
     amount: Joi.number().required(),
     concept: Joi.string().required()
@@ -180,7 +207,7 @@ export const validateExpenseData = (req, res, next) => {
 
 export const validateInventoryInputData = (req, res, next) => {
   const schema = Joi.object({
-    numberOfInput: Joi.string().required(),
+    numberOfInput: Joi.number().required(),
     provider: Joi.string().required(),
     date: Joi.date().required(),
     listOfMaterials: Joi.array().items(
@@ -204,7 +231,7 @@ export const validateInventoryInputData = (req, res, next) => {
 
 export const validateInventoryOutputData = (req, res, next) => {
   const schema = Joi.object({
-    numberOfInput: Joi.string().required(),
+    numberOfInput: Joi.number().required(),
     // employee: Joi.string().required(),
     order: Joi.string().required(),
     date: Joi.date().required(),

@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const schema = new mongoose.Schema(
   {
     accountingSeat: {
-      type: String,
+      type: Number,
       required: true,
       trim: true
     },
@@ -27,6 +27,23 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    singleOrder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Order'
+    },
+    orderList: [
+      {
+        order: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Order'
+        },
+        indirectCost: {
+          type: Number,
+          required: false,
+          trim: true
+        }
+      }
+    ],
     inventoryInput: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'InventoryInput'

@@ -1,10 +1,3 @@
-// export const production_stage = {
-//     onHold: "On Hold",
-//     inProduction: "In Production",
-//     finished: "Finished",
-//     sold: "Sold"
-// }
-
 const productionStage = [
   {
     orderStateNumber: 0,

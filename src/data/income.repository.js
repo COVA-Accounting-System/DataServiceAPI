@@ -25,12 +25,15 @@ export default class incomeRepository {
 
   async createIncome (newIncome) {
     const income = await newIncome.save()
-    console.log(income._id)
     return this.getIncome({ _id: income._id })
   }
 
   async updateIncome (query, queryToUpdateWith) {
     await this.Income.findOneAndUpdate(query, queryToUpdateWith)
     return this.getIncome(query)
+  }
+
+  async deleteIncome (query) {
+    return this.Income.findOneAndDelete(query)
   }
 }

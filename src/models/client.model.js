@@ -32,6 +32,12 @@ const schema = new mongoose.Schema(
       required: false,
       trim: true
     },
+    balance: {
+      type: Number,
+      required: true,
+      default: 0,
+      trim: true
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId
     },

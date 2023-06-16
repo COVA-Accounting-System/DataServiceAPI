@@ -23,9 +23,40 @@ router.post('/', validateIncomeData, async (req, res) => {
   }
 })
 
+router.post(
+  '/createAndRegisterInOrder',
+  validateIncomeData,
+  async (req, res) => {
+    try {
+      const newIncome = await incomeService.createIncomeAndRegisterInOrder(req)
+      res.json(newIncome)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+)
+
 router.put('/delete', async (req, res) => {
   try {
     const income = await incomeService.updateIncomeVisibility(req)
+    res.json(income)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.put('/deleteAndRemoveFromOrder', async (req, res) => {
+  try {
+    const income = await incomeService.deleteAndRemoveFromOrder(req)
+    res.json(income)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.put('/updateAndUpdateOrder', async (req, res) => {
+  try {
+    const income = await incomeService.updateIncomeAndUpdateOrder(req)
     res.json(income)
   } catch (err) {
     console.error(err)

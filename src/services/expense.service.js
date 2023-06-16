@@ -1,9 +1,72 @@
 import _expenseRepository from '../data/expense.repository.js'
 import { Expense } from '../models/expense.model.js'
 
+import _inventoryInputRepository from '../data/inventoryInput.repository.js'
+import { InventoryInput } from '../models/inventoryInput.model.js'
+
+import { Order } from '../models/order.model.js'
+import _orderRepository from '../data/order.repository.js'
+
+import { Config } from '../models/config.model.js'
+import _configRepository from '../data/config.repository.js'
+
+import { EXPENSE_CATEGORIES } from '../enums/expenseCategories.js'
+import { ORDER_PRODUCT_AMOUNT } from '../enums/orderProductAmount.js'
+
 export default class expenseService {
   constructor () {
     this.expenseRepository = new _expenseRepository(Expense)
+    this.inventoryInputRepository = new _inventoryInputRepository(
+      InventoryInput
+    )
+    this.orderRepository = new _orderRepository(Order)
+    this.configRepository = new _configRepository(Config)
+  }
+
+  roundToFixed (num) {
+    const rounded = Math.round(num * 100) / 100
+    return rounded
+  }
+
+  calculateIndirectCosts (orders, amount) {
+    let totalOfUnits = 0
+    orders.map(order => {
+      if (order.orderProductAmountType === ORDER_PRODUCT_AMOUNT.UNIT) {
+        totalOfUnits = totalOfUnits + order.orderProductAmount
+      }
+      if (order.orderProductAmountType === ORDER_PRODUCT_AMOUNT.PAIR) {
+        totalOfUnits = totalOfUnits + order.orderProductAmount * 2
+      }
+      if (order.orderProductAmountType === ORDER_PRODUCT_AMOUNT.DOZEN) {
+        totalOfUnits = totalOfUnits + order.orderProductAmount * 24
+      }
+    })
+    const costByUnit = amount / totalOfUnits
+    const ordersIndirectCosts = orders.map(order => {
+      if (order.orderProductAmountType === ORDER_PRODUCT_AMOUNT.UNIT) {
+        return {
+          id: order._id,
+          indirectCost: this.roundToFixed(order.orderProductAmount * costByUnit)
+        }
+      }
+      if (order.orderProductAmountType === ORDER_PRODUCT_AMOUNT.PAIR) {
+        return {
+          id: order._id,
+          indirectCost: this.roundToFixed(
+            order.orderProductAmount * costByUnit * 2
+          )
+        }
+      }
+      if (order.orderProductAmountType === ORDER_PRODUCT_AMOUNT.DOZEN) {
+        return {
+          id: order._id,
+          indirectCost: this.roundToFixed(
+            order.orderProductAmount * costByUnit * 24
+          )
+        }
+      }
+    })
+    return ordersIndirectCosts
   }
 
   async getExpenses (data) {
@@ -12,11 +75,70 @@ export default class expenseService {
   }
 
   async createExpense (data) {
+    let orderListUpdated = []
+    if (data.body.category === EXPENSE_CATEGORIES.LABOUR) {
+      await this.orderRepository.changeLabourCosts(
+        { _id: data.body.singleOrder },
+        data.body.amount
+      )
+    }
+    if (data.body.category === EXPENSE_CATEGORIES.INDIRECT_COSTS) {
+      const ordersIds = data.body.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+      const ordersWithCosts = this.calculateIndirectCosts(
+        orders,
+        data.body.amount
+      )
+      ordersWithCosts.forEach(async order => {
+        orderListUpdated.push({order: order.id, indirectCost: order.indirectCost})
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          order.indirectCost
+        )
+      })
+    }
     const newExpense = new Expense({
       ...data.body,
+      orderList: orderListUpdated,
       userId: data.userId
     })
-    return this.expenseRepository.createExpense(newExpense)
+    const expense = await this.expenseRepository.createExpense(newExpense)
+    this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { expenseNumber: 1 }
+      }
+    )
+    return expense
+  }
+
+  async createExpenseOfInventoryInput (data) {
+    const newInventoryInput = new InventoryInput({
+      ...data.body.inventoryData,
+      userId: data.userId
+    })
+    const inventoryInput =
+      await this.inventoryInputRepository.createInventoryInput(
+        newInventoryInput
+      )
+    const newExpense = new Expense({
+      ...data.body.expenseData,
+      userId: data.userId,
+      inventoryInput: inventoryInput._id
+    })
+    const expense = await this.expenseRepository.createExpense(newExpense)
+    await this.configRepository.updateConfig(
+      { userId: data.userId },
+      {
+        $inc: { expenseNumber: 1, inventoryInputNumber: 1 }
+      }
+    )
+    return {
+      expense,
+      inventoryInput
+    }
   }
 
   async updateExpenseVisibility (data) {
@@ -25,14 +147,181 @@ export default class expenseService {
     return this.expenseRepository.updateExpense(query, queryToUpdateWith)
   }
 
+  async updateAddIndirectExpensesOfAnOrder (orderId) {
+    const expenses = await this.expenseRepository.getExpensesGivenAnOrder(
+      orderId
+    )
+    expenses.map(async expense => {
+      const ordersIds = expense.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+
+      let updatedOrderList = []
+      const ordersCosts = this.calculateIndirectCosts(orders, expense.amount)
+      ordersCosts.map(async order => {
+        updatedOrderList.push({order: order.id, indirectCost: order.indirectCost})
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          order.indirectCost
+        )
+      })
+      await this.expenseRepository.updateExpense(
+        { _id: expense._id },
+        { orderList: updatedOrderList }
+      )
+    })
+  }
+
+  async updateRemoveIndirectExpensesOfAnOrder (orderId) {
+    const expenses = await this.expenseRepository.getExpensesGivenAnOrder(
+      orderId
+    )
+    expenses.map(async expense => {
+      const ordersIds = expense.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+
+      let updatedOrderList = []
+
+      const ordersCosts = this.calculateIndirectCosts(orders, expense.amount)
+      ordersCosts.map(async order => {
+        updatedOrderList.push({order: order.id, indirectCost: order.indirectCost})
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          -order.indirectCost
+        )
+      })
+      await this.expenseRepository.updateExpense(
+        { _id: expense._id },
+        { orderList: updatedOrderList }
+      )
+    })
+  }
+
   async updateExpense (data) {
-    const { _id, ...queryToUpdateWith } = data.body
-    const query = { _id }
-    return this.expenseRepository.updateExpense(query, queryToUpdateWith)
+    let updatedOrderList = []
+    const oldExpense =
+      await this.expenseRepository.getExpenseByIdWithoutPopulate({
+        _id: data.body._id
+      })
+    if (oldExpense.category === EXPENSE_CATEGORIES.LABOUR) {
+      const newAmount = data.body.amount - oldExpense.amount
+      await this.orderRepository.changeLabourCosts(
+        { _id: oldExpense.singleOrder },
+        newAmount
+      )
+    }
+    if (oldExpense.category === EXPENSE_CATEGORIES.INDIRECT_COSTS) {
+      let sumOfIndirectCosts = 0
+      const ordersIds = oldExpense.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+
+      const ordersWithCosts = this.calculateIndirectCosts(
+        orders,
+        oldExpense.amount
+      )
+      ordersWithCosts.forEach(async order => {
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          -order.indirectCost
+        )
+      })
+
+      const newOrdersIds = data.body.orderList.map(order => order.order)
+      const newOrders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        newOrdersIds
+      )
+      const newOrdersWithCosts = this.calculateIndirectCosts(
+        newOrders,
+        data.body.amount
+      )
+      newOrdersWithCosts.forEach(async order => {
+        updatedOrderList.push({order: order.id, indirectCost: order.indirectCost})
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          order.indirectCost
+        )
+      })
+    }
+    const updatedExpense = {
+      ...data.body,
+      orderList: updatedOrderList
+    }
+
+    return this.expenseRepository.updateExpense({_id: data.body._id}, updatedExpense)
+  }
+
+  async updateExpenseAndInventoryInput (data) {
+    const inventoryData = data.body.inventoryData
+    const expenseData = data.body.expenseData
+    const inventoryInput =
+      await this.inventoryInputRepository.updateInventoryInput(
+        { _id: inventoryData._id },
+        inventoryData
+      )
+    const expense = await this.expenseRepository.updateExpense(
+      { _id: expenseData._id },
+      expenseData
+    )
+    return {
+      expense,
+      inventoryInput
+    }
+  }
+
+  async deleteExpenseAndInventoryInput (data) {
+    const expense = await this.expenseRepository.deleteExpense({
+      _id: data.body.expenseData._id
+    })
+    const inventoryInput =
+      await this.inventoryInputRepository.deleteInventoryInput({
+        _id: data.body.inventoryData._id
+      })
+    return {
+      expense,
+      inventoryInput
+    }
   }
 
   async deleteExpense (data) {
-    const query = data.body
+    if (data.body.category === EXPENSE_CATEGORIES.LABOUR) {
+      await this.orderRepository.changeLabourCosts(
+        { _id: data.body.singleOrder },
+        -data.body.amount
+      )
+    }
+    if (data.body.category === EXPENSE_CATEGORIES.INDIRECT_COSTS) {
+      const ordersIds = data.body.orderList.map(order => order.order)
+      const orders = await this.orderRepository.getOrdersByIdWithoutPopulate(
+        ordersIds
+      )
+      const ordersWithCosts = this.calculateIndirectCosts(
+        orders,
+        data.body.amount
+      )
+      ordersWithCosts.map(async order => {
+        await this.orderRepository.changeIndirectCosts(
+          { _id: order.id },
+          -order.indirectCost
+        )
+      })
+    }
+    const query = { _id: data.body._id }
     return this.expenseRepository.deleteExpense(query)
+  }
+
+  async getExpensesGivenAnOrder (singleOrder) {
+    const labourExpenses =
+      await this.expenseRepository.getLabourExpensesGivenAnOrder(singleOrder)
+    const indirectCostsExpenses =
+      await this.expenseRepository.getExpensesGivenAnOrder(singleOrder)
+    return {
+      labourExpenses,
+      indirectCostsExpenses
+    }
   }
 }

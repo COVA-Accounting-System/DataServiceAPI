@@ -7,7 +7,9 @@ const inventoryOutputService = new _inventoryOutputService()
 
 router.get('/', async (req, res) => {
   try {
-    const inventoryOutput = await inventoryOutputService.getInventoryOutputs(req)
+    const inventoryOutput = await inventoryOutputService.getInventoryOutputs(
+      req
+    )
     res.json(inventoryOutput)
   } catch (err) {
     console.error(err)
@@ -16,8 +18,36 @@ router.get('/', async (req, res) => {
 
 router.post('/', validateInventoryOutputData, async (req, res) => {
   try {
-    const newInventoryOutput = await inventoryOutputService.createInventoryOutput(req)
+    const newInventoryOutput =
+      await inventoryOutputService.createInventoryOutput(req)
     res.json(newInventoryOutput)
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+router.post(
+  '/createAndRegisterInOrder',
+  validateInventoryOutputData,
+  async (req, res) => {
+    try {
+      const newInventoryOutput =
+        await inventoryOutputService.createInventoryOutputAndRegisterInOrder(
+          req
+        )
+      res.json(newInventoryOutput)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+)
+
+router.put('/deleteAndRemoveFromOrder', async (req, res) => {
+  try {
+    console.log(req.body)
+    const inventoryOutput =
+      await inventoryOutputService.deleteAndRemoveFromOrder(req)
+    res.json(inventoryOutput)
   } catch (err) {
     console.error(err)
   }
@@ -25,7 +55,8 @@ router.post('/', validateInventoryOutputData, async (req, res) => {
 
 router.put('/delete', async (req, res) => {
   try {
-    const inventoryOutput = await inventoryOutputService.updateInventoryOutputVisibility(req)
+    const inventoryOutput =
+      await inventoryOutputService.updateInventoryOutputVisibility(req)
     res.json(inventoryOutput)
   } catch (err) {
     console.error(err)
@@ -34,7 +65,9 @@ router.put('/delete', async (req, res) => {
 
 router.put('/update', async (req, res) => {
   try {
-    const inventoryOutput = await inventoryOutputService.updateInventoryOutput(req)
+    const inventoryOutput = await inventoryOutputService.updateInventoryOutput(
+      req
+    )
     res.json(inventoryOutput)
   } catch (err) {
     console.error(err)

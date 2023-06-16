@@ -25,4 +25,8 @@ export default class inventoryInputRepository {
     await this.InventoryInput.findOneAndUpdate(query, queryToUpdateWith)
     return this.getInventoryInput(query)
   }
+
+  async deleteInventoryInput (query) {
+    return this.InventoryInput.findOneAndDelete(query)
+  }
 }
